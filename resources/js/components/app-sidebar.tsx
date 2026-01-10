@@ -28,7 +28,7 @@ import {
 const items = [
     {
         title: "Home",
-        url: "#",
+        url: "/",
         icon: Home,
     },
     {
@@ -53,7 +53,7 @@ const items = [
     },
     {
         title: "Térkép",
-        url: "#",
+        url: "/map",
         icon: MapPinned,
     },
     {
