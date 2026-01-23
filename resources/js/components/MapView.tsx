@@ -5,7 +5,7 @@ import L from "leaflet";
 type MapItem = {
   id: number;
   title: string;
-  category: "problem" | "event";
+  category: "issue" | "event";
   lat: number;
   lng: number;
 };
@@ -14,7 +14,7 @@ const ITEMS: MapItem[] = [
   {
     id: 1,
     title: "Kátyú az úton",
-    category: "problem",
+    category: "issue",
     lat: 47.4979,
     lng: 19.0402,
   },
@@ -28,7 +28,7 @@ const ITEMS: MapItem[] = [
 ];
 
 const icons = {
-  problem: new L.Icon({
+  issue: new L.Icon({
     iconUrl: "/icons/red-pin.svg",
     iconSize: [25, 41],
     iconAnchor: [12, 41],
@@ -42,7 +42,7 @@ const icons = {
 
 export default function MapView() {
   const [filters, setFilters] = useState({
-    problem: true,
+    issue: true,
     event: true,
   });
 
@@ -58,9 +58,9 @@ export default function MapView() {
         <label>
           <input
             type="checkbox"
-            checked={filters.problem}
+            checked={filters.issue}
             onChange={(e) =>
-              setFilters({ ...filters, problem: e.target.checked })
+              setFilters({ ...filters, issue: e.target.checked })
             }
           />
           Probléma bejelentések
