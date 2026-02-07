@@ -58,7 +58,7 @@ const items = [
     },
     {
         title: "Admin",
-        url: "#",
+        url: "/admin",
         icon: ShieldUser,
     }
 ]
