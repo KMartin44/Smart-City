@@ -33,12 +33,12 @@ const items = [
     },
     {
         title: "Problémabejelentés",
-        url: "#",
+        url: "/issues",
         icon: TriangleAlert,
     },
     {
         title: "Események",
-        url: "#",
+        url: "/events",
         icon: CalendarDays,
     },
     {

@@ -28,3 +28,11 @@ Route::get('/admin/edit/{type}/{id}', function ($type, $id) {
         'id' => (int) $id,
     ]);
 })->name('admin.edit');
+
+Route::get("/issues", function () {
+    return Inertia::render('issuePage/index');
+})->name('issues.index');
+
+Route::get("/events", function () {
+    return Inertia::render('eventPage/index');
+})->name('events.index');
