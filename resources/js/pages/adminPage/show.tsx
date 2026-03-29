@@ -1,4 +1,11 @@
 import { useEffect, useState } from 'react';
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 type Type = 'event' | 'issue' | 'statement';
 
@@ -50,57 +57,70 @@ export default function Show({ type, id }: ShowProps) {
     }
 
     return (
-        <div>
-            <h1>
-                {type === 'event' && 'Esemény részletek'}
-                {type === 'issue' && 'Problémabejelentés részletek'}
-                {type === 'statement' && 'Közlemény részletek'}
-            </h1>
+        <Card>
+            <CardHeader>
+                <CardTitle>
+                    {type === 'event' && 'Esemény részletek'}
+                    {type === 'issue' && 'Problémabejelentés részletek'}
+                    {type === 'statement' && 'Közlemény részletek'}
+                </CardTitle>
+            </CardHeader>
 
-            <p>
-                <strong>ID: </strong> {item.id}
-            </p>
+            <CardContent>
+                <div>
+                    <strong>ID:</strong> {item.id}
+                </div>
 
-            <p>
-                <strong>Cím: </strong> {item.title}
-            </p>
+                <div>
+                    <strong>Cím:</strong> {item.title}
+                </div>
 
-            {(type === 'event' || type === 'issue') && (
-                <p>
-                    <strong>Kategória: </strong> {item.category}
-                </p>
-            )}
+                {(type === 'event' || type === 'issue') && (
+                    <div>
+                        <strong>Kategória:</strong> {item.category ?? '-'}
+                    </div>
+                )}
 
-            {(type === 'event' || type === 'issue') && (
-                <>
+                {(type === 'event' || type === 'issue') && (
+                    <>
+                        <div>
+                            <strong>Latitude:</strong> {item.latitude ?? '-'}
+                        </div>
+
+                        <div>
+                            <strong>Longitude:</strong> {item.longitude ?? '-'}
+                        </div>
+                    </>
+                )}
+
+                {type === 'event' && (
+                    <>
+                        <div>
+                            <strong>Kezdés:</strong> {item.start_time ?? '-'}
+                        </div>
+
+                        <div>
+                            <strong>Befejezés:</strong> {item.end_time ?? '-'}
+                        </div>
+                    </>
+                )}
+
+                <Separator />
+
+                <div>
+                    <strong>Leírás:</strong>
                     <p>
-                        <strong>Latitude: </strong> {item.latitude}
+                        {item.description}
                     </p>
-                    <p>
-                        <strong>Longitude: </strong> {item.longitude}
-                    </p>
-                </>
-            )}
+                </div>
 
-            {type === 'event' && (
-                <>
-                    <p>
-                        <strong>Kezdés: </strong> {item.start_time}
-                    </p>
-                    <p>
-                        <strong>Befejezés: </strong> {item.end_time}
-                    </p>
-                </>
-            )}
+                <Separator />
 
-            <p>
-                <strong>Leírás: </strong>
-            </p>
-            <p>{item.description}</p>
-
-            <p>
-                <strong>Létrehozva: </strong> {item.created_at}
-            </p>
-        </div>
+                <div>
+                    <div>Létrehozva: {item.created_at}</div>
+                    <div>Frissítve: {item.updated_at}</div>
+                </div>
+            </CardContent>
+        </Card>
     );
 }

@@ -1,4 +1,16 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type Type = 'event' | 'issue' | 'statement';
 
@@ -49,82 +61,140 @@ export default function Edit({ type, id }: EditProps) {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label>Cím</label>
-                <input name="title" value={data.title} onChange={handleChange} required />
-            </div>
+        <Card>
+            <CardHeader>
+                <CardTitle>Szerkesztés</CardTitle>
+            </CardHeader>
 
-            {(type === 'event' || type === 'issue') && (
-                <div>
-                    <label>Kategória</label>
-                    <select name="category" value={data.category ?? ''} onChange={handleChange} required>
-                        <option value="">Válassz kategóriát</option>
-
-                        {type === 'event' && (
-                            <>
-                                <option value="kultura">Kulturális</option>
-                                <option value="kozossegi">Közösségi</option>
-                                <option value="oktatas">Oktatási</option>
-                                <option value="sport">Sport</option>
-                                <option value="csaladi">Családi</option>
-                                <option value="kreativ">Kreatív</option>
-                                <option value="vallasi">Vallási</option>
-                                <option value="onkormanyzati">Önkormányzati</option>
-                                <option value="egyeb">Egyéb</option>
-                            </>
-                        )}
-
-                        {type === 'issue' && (
-                            <>
-                                <option value="kozterulet">Közterület</option>
-                                <option value="kornyezet">Környezet</option>
-                                <option value="kozlekedes">Közlekedés</option>
-                                <option value="zaj">Zaj</option>
-                                <option value="kozmuvek">Közművek</option>
-                                <option value="allat">Állatok</option>
-                                <option value="digitalis">Digitális</option>
-                                <option value="egyeb">Egyéb</option>
-                            </>
-                        )}
-                    </select>
-                </div>
-            )}
-
-            {(type === 'event' || type === 'issue') && (
-                <>
+            <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label>Szélesség</label>
-                        <input type="number" step="0.00000001" name="latitude" value={data.latitude ?? ''} onChange={handleChange} required />
+                        <Label>Cím</Label>
+                        <Input
+                            name="title"
+                            value={data.title}
+                            onChange={handleChange}
+                            required
+                        />
                     </div>
 
+                    {(type === 'event' || type === 'issue') && (
+                        <div>
+                            <Label>Kategória</Label>
+                            <Select
+                                value={data.category}
+                                onValueChange={(value) =>
+                                    setData((prev) => ({
+                                        ...prev,
+                                        category: value ?? undefined,
+                                    }))
+                                }
+                            >
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Válassz kategóriát" />
+                                </SelectTrigger>
+
+                                <SelectContent>
+                                    {type === 'event' && (
+                                        <>
+                                            <SelectItem value="kultura">Kulturális</SelectItem>
+                                            <SelectItem value="kozossegi">Közösségi</SelectItem>
+                                            <SelectItem value="oktatas">Oktatás</SelectItem>
+                                            <SelectItem value="sport">Sport</SelectItem>
+                                            <SelectItem value="csaladi">Családi</SelectItem>
+                                            <SelectItem value="kreativ">Kreatív</SelectItem>
+                                            <SelectItem value="vallasi">Vallási</SelectItem>
+                                            <SelectItem value="onkormanyzati">Önkormányzati</SelectItem>
+                                            <SelectItem value="egyeb">Egyéb</SelectItem>
+                                        </>
+                                    )}
+
+                                    {type === 'issue' && (
+                                        <>
+                                            <SelectItem value="kozterulet">Közterület</SelectItem>
+                                            <SelectItem value="kornyezet">Környezet</SelectItem>
+                                            <SelectItem value="kozlekedes">Közlekedés</SelectItem>
+                                            <SelectItem value="zaj">Zaj</SelectItem>
+                                            <SelectItem value="kozmuvek">Közművek</SelectItem>
+                                            <SelectItem value="allat">Állatok</SelectItem>
+                                            <SelectItem value="digitalis">Digitális</SelectItem>
+                                            <SelectItem value="egyeb">Egyéb</SelectItem>
+                                        </>
+                                    )}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    )}
+
+                    {(type === 'event' || type === 'issue') && (
+                        <div>
+                            <div className="space-y-2">
+                                <Label>Szélesség</Label>
+                                <Input
+                                    type="number"
+                                    step="0.00000001"
+                                    name="latitude"
+                                    value={data.latitude ?? ''}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+
+                            <div>
+                                <Label>Hosszúság</Label>
+                                <Input
+                                    type="number"
+                                    step="0.00000001"
+                                    name="longitude"
+                                    value={data.longitude ?? ''}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                        </div>
+                    )}
+
+                    {type === 'event' && (
+                        <div>
+                            <div>
+                                <Label>Kezdés</Label>
+                                <Input
+                                    type="datetime-local"
+                                    name="start_time"
+                                    value={data.start_time ?? ''}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+
+                            <div>
+                                <Label>Befejezés</Label>
+                                <Input
+                                    type="datetime-local"
+                                    name="end_time"
+                                    value={data.end_time ?? ''}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                        </div>
+                    )}
+
                     <div>
-                        <label>Hosszúság</label>
-                        <input type="number" step="0.00000001" name="longitude" value={data.longitude ?? ''} onChange={handleChange} required />
-                    </div>
-                </>
-            )}
-
-            {type === 'event' && (
-                <>
-                    <div>
-                        <label>Kezdés</label>
-                        <input type="datetime-local" name="start_time" value={data.start_time ?? ''} onChange={handleChange} required />
+                        <Label>Leírás</Label>
+                        <Textarea
+                            name="description"
+                            value={data.description}
+                            onChange={handleChange}
+                            required
+                        />
                     </div>
 
-                    <div>
-                        <label>Befejezés</label>
-                        <input type="datetime-local" name="end_time" value={data.end_time ?? ''} onChange={handleChange} required />
-                    </div>
-                </>
-            )}
-
-            <div>
-                <label>Leírás</label>
-                <textarea name="description" value={data.description} onChange={handleChange} required />
-            </div>
-
-            <button type="submit">Mentés</button>
-        </form>
+                    <Button type="submit" className="w-full">
+                        Mentés
+                    </Button>
+                </form>
+            </CardContent>
+        </Card>
     );
 }
