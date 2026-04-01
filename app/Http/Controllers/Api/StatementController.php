@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Statement;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StatementController extends Controller
 {
@@ -39,6 +40,11 @@ class StatementController extends Controller
      */
     public function update(Request $request, Statement $statement)
     {
+        $user = Auth::user();
+        if (!$user || !in_array($user->type, ['admin', 'onkormanyzat', 'onkormanyzati'])) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
         $statement->update($request->all());
         return response()->json(['data' => $statement], 200);
     }
@@ -48,6 +54,11 @@ class StatementController extends Controller
      */
     public function destroy(Statement $statement)
     {
+        $user = Auth::user();
+        if (!$user || !in_array($user->type, ['admin', 'onkormanyzat', 'onkormanyzati'])) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
         $statement->delete();
         return response()->noContent();
     }
