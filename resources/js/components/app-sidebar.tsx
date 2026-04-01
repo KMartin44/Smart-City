@@ -12,7 +12,6 @@ import {
     SidebarContent, SidebarFooter,
     SidebarGroup,
     SidebarGroupContent,
-    SidebarGroupLabel,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem
@@ -23,8 +22,8 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import { Slot } from '@radix-ui/react-slot';
 
-// Menu items.
 const items = [
     {
         title: "Home",
@@ -42,8 +41,8 @@ const items = [
         icon: CalendarDays,
     },
     {
-        title: "Fórum",
-        url: "#",
+        title: "Bejelentések",
+        url: "/statements",
         icon: PencilLine,
     },
     {
@@ -72,11 +71,9 @@ export function AppSidebar() {
                         <SidebarMenu>
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild>
-                                        <a href={item.url}>
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </a>
+                                    <SidebarMenuButton onClick={() => window.location.href = item.url}>
+                                        <item.icon />
+                                        <span>{item.title}</span>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}
@@ -88,11 +85,13 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <SidebarMenuButton>
-                                    <User2 /> Account
-                                    <ChevronUp className="ml-auto" />
-                                </SidebarMenuButton>
+                            <DropdownMenuTrigger>
+                                <Slot>
+                                    <SidebarMenuButton>
+                                        <User2 /> Account
+                                        <ChevronUp className="ml-auto" />
+                                    </SidebarMenuButton>
+                                </Slot>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent
                                 side="top"

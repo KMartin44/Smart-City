@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Http\Controllers\UserController;
 
@@ -11,6 +12,32 @@ Route::get('/', function () {
 Route::get('/map', function () {
     return Inertia::render('mapPage');
 })->name('map');
+
+Route::get('/statements', function () {
+    return Inertia::render('statementsPage/index', [
+        'userType' => Auth::check() ? Auth::user()->type : null,
+    ]);
+})->name('statements');
+
+Route::get('/statements/show/{id}', function ($id) {
+    return Inertia::render('statementsPage/show', [
+        'id' => (int) $id,
+        'userType' => Auth::check() ? Auth::user()->type : null,
+    ]);
+})->name('statements.show');
+
+Route::get('/statements/edit/{id}', function ($id) {
+    $userType = Auth::check() ? Auth::user()->type : null;
+    $isAllowed = in_array($userType, ['admin', 'onkormanyzat', 'onkormanyzati']);
+    if (!$isAllowed) {
+        abort(403, 'Nincs jogosultságod a közlemény szerkesztéséhez.');
+    }
+
+    return Inertia::render('statementsPage/edit', [
+        'id' => (int) $id,
+        'userType' => $userType,
+    ]);
+})->name('statements.edit');
 
 Route::get('/admin', function () {
     return Inertia::render('adminPage/index');
