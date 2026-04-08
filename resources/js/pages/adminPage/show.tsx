@@ -1,11 +1,7 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { MainLayout } from '@/layouts/mainLayout';
 import { useEffect, useState } from 'react';
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 
 type Type = 'event' | 'issue' | 'statement';
 
@@ -57,70 +53,70 @@ export default function Show({ type, id }: ShowProps) {
     }
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>
-                    {type === 'event' && 'Esemény részletek'}
-                    {type === 'issue' && 'Problémabejelentés részletek'}
-                    {type === 'statement' && 'Közlemény részletek'}
-                </CardTitle>
-            </CardHeader>
+        <MainLayout>
+            <Card>
+                <CardHeader>
+                    <CardTitle>
+                        {type === 'event' && 'Esemény részletek'}
+                        {type === 'issue' && 'Problémabejelentés részletek'}
+                        {type === 'statement' && 'Közlemény részletek'}
+                    </CardTitle>
+                </CardHeader>
 
-            <CardContent>
-                <div>
-                    <strong>ID:</strong> {item.id}
-                </div>
-
-                <div>
-                    <strong>Cím:</strong> {item.title}
-                </div>
-
-                {(type === 'event' || type === 'issue') && (
+                <CardContent>
                     <div>
-                        <strong>Kategória:</strong> {item.category ?? '-'}
+                        <strong>ID:</strong> {item.id}
                     </div>
-                )}
 
-                {(type === 'event' || type === 'issue') && (
-                    <>
+                    <div>
+                        <strong>Cím:</strong> {item.title}
+                    </div>
+
+                    {(type === 'event' || type === 'issue') && (
                         <div>
-                            <strong>Latitude:</strong> {item.latitude ?? '-'}
+                            <strong>Kategória:</strong> {item.category ?? '-'}
                         </div>
+                    )}
 
-                        <div>
-                            <strong>Longitude:</strong> {item.longitude ?? '-'}
-                        </div>
-                    </>
-                )}
+                    {(type === 'event' || type === 'issue') && (
+                        <>
+                            <div>
+                                <strong>Latitude:</strong> {item.latitude ?? '-'}
+                            </div>
 
-                {type === 'event' && (
-                    <>
-                        <div>
-                            <strong>Kezdés:</strong> {item.start_time ?? '-'}
-                        </div>
+                            <div>
+                                <strong>Longitude:</strong> {item.longitude ?? '-'}
+                            </div>
+                        </>
+                    )}
 
-                        <div>
-                            <strong>Befejezés:</strong> {item.end_time ?? '-'}
-                        </div>
-                    </>
-                )}
+                    {type === 'event' && (
+                        <>
+                            <div>
+                                <strong>Kezdés:</strong> {item.start_time ?? '-'}
+                            </div>
 
-                <Separator />
+                            <div>
+                                <strong>Befejezés:</strong> {item.end_time ?? '-'}
+                            </div>
+                        </>
+                    )}
 
-                <div>
-                    <strong>Leírás:</strong>
-                    <p>
-                        {item.description}
-                    </p>
-                </div>
+                    <Separator />
 
-                <Separator />
+                    <div>
+                        <strong>Leírás:</strong>
+                        <p>{item.description}</p>
+                    </div>
 
-                <div>
-                    <div>Létrehozva: {item.created_at}</div>
-                    <div>Frissítve: {item.updated_at}</div>
-                </div>
-            </CardContent>
-        </Card>
+                    <Separator />
+
+                    <div>
+                        <div>Létrehozva: {item.created_at}</div>
+                        <div>Frissítve: {item.updated_at}</div>
+                    </div>
+                </CardContent>
+            </Card>
+        </MainLayout>
     );
 }

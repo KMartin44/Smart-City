@@ -1,5 +1,6 @@
 import AdminButtons from '@/components/AdminComponents/AdminButtons';
 import AdminTable from '@/components/AdminComponents/AdminTable';
+import { MainLayout } from '@/layouts/mainLayout';
 import { useEffect, useState } from 'react';
 
 type Types = 'event' | 'issue' | 'statement' | null;
@@ -35,12 +36,12 @@ export default function Index() {
     }, [type]);
 
     return (
-        <>
+        <MainLayout>
             <h1>Admin oldal</h1>
 
             <AdminButtons setType={setType} />
 
             {type && <AdminTable items={items} type={type} />}
-        </>
+        </MainLayout>
     );
 }
