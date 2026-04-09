@@ -51,7 +51,6 @@ export default function CreateIssueModal({
     return (
         <div>
             <div>
-                <h2><u>Probléma bejelentése</u></h2>
                 <Card>
                     <form onSubmit={handleSubmit}>
                         <CardContent>

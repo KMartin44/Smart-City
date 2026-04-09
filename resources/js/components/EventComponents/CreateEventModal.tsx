@@ -52,7 +52,6 @@ export default function CreateEventModal({
     return (
         <div>
             <div>
-                <h2><u>Esemény hozzáadása</u></h2>
                 <Card>
                     <form onSubmit={handleSubmit}>
                         <CardContent>
@@ -92,11 +91,11 @@ export default function CreateEventModal({
                                 onChange={(e) =>
                                     setForm({ ...form, description: e.target.value })
                                 } required />
-                            <Input type="date" placeholder="Kezdés időpontja" value={form.start_time}
+                            <Input type="datetime-local" placeholder="Kezdés időpontja" value={form.start_time}
                                 onChange={(e) =>
                                     setForm({ ...form, start_time: e.target.value })
                                 } required />
-                            <Input type="date" placeholder="Befejezés időpontja" value={form.end_time}
+                            <Input type="datetime-local" placeholder="Befejezés időpontja" value={form.end_time}
                                 onChange={(e) =>
                                     setForm({ ...form, end_time: e.target.value })
                                 } required />
