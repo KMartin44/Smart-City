@@ -1,6 +1,8 @@
 import React, { useEffect, useState, ReactNode } from "react";
 import { MainLayout } from '@/layouts/mainLayout';
 import CreateEventModal from "@/components/EventComponents/CreateEventModal";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 
 type Event = {
@@ -18,7 +20,17 @@ type Event = {
 export default function EventsPage() {
     const [events, setEvents] = useState<Event[]>([]);
     const [showModal, setShowModal] = useState(false);
-
+    const categoryLabels: Record<string, string> = {
+        kultura: 'Kulturális események',
+        kozossegi: 'Közösségi és civil események',
+        oktatas: 'Oktatás és ismeretterjesztés',
+        sport: 'Sport és szabadidő',
+        csaladi: 'Gyermek- és családi programok',
+        kreativ: 'Kreatív és kézműves',
+        vallasi: 'Vallási események',
+        onkormanyzati: 'Önkormányzati és hivatalos események',
+        egyeb: 'Egyéb',
+    };
     const fetchEvents = async () => {
         await fetch("api/events").then((res) => res.json()).then((data) => setEvents(data));
     };
@@ -29,9 +41,9 @@ export default function EventsPage() {
     return (
         <div>
             <h1>Események</h1>
-            <button onClick={() => setShowModal(true)}>
+            <Button onClick={() => setShowModal(true)}>
                 Esemény hozzáadása
-            </button>
+            </Button>
             <CreateEventModal
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
@@ -39,13 +51,13 @@ export default function EventsPage() {
             />
             <div>
                 {events.map((event) => (
-                    <div key={event.id} className="eventCard">
-                        <h2>{event.title}</h2>
-                        <h5>{event.category}</h5>
-                        <p>{event.description}</p>
-                        <p>Koordináták: {Number(event.latitude).toFixed(4)}° N, {Number(event.longitude).toFixed(4)}° E</p>
+                    <Card key={event.id} className="eventCard">
+                        <CardTitle>{event.title}</CardTitle>
+                        <CardDescription>{event.description}</CardDescription>
+                        <p>{categoryLabels[event.category] || event.category}</p>
+                        <p><span className="bigger">Koordináták:</span> {Number(event.latitude).toFixed(4)}° N, {Number(event.longitude).toFixed(4)}° E</p>
                         <p>{event.start_time.toString()} - {event.end_time.toString()}</p>
-                    </div>
+                    </Card>
                 ))}
             </div>
         </div>

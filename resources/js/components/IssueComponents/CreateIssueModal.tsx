@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import { Card, CardContent, CardFooter } from "../ui/card";
+import { Input } from "../ui/input";
+import { Select, SelectContent,  SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button";
 
 type Props = {
     isOpen: boolean;
@@ -35,6 +40,7 @@ export default function CreateIssueModal({
                 ...form,
                 latitude: parseFloat(form.latitude),
                 longitude: parseFloat(form.longitude),
+                user_id :1,
             }),
         });
 
@@ -45,48 +51,57 @@ export default function CreateIssueModal({
     return (
         <div>
             <div>
-                <h2>Probléma bejelentése</h2>
-                <form onSubmit={handleSubmit}>
-                    <input placeholder="Cím" value={form.title}
-                        onChange={(e) =>
-                            setForm({ ...form, title: e.target.value })
-                        } required />
-                    <select
-                        onChange={(e) =>
-                            setForm({ ...form, category: e.target.value })
-                        } required defaultValue={""}>
-                        <option value="" disabled>Válassz kategóriát</option>
-                        <option value="kozterulet">Közterület és infrastruktúra</option>
-                        <option value="kornyezet">Zöldterület és környezetvédelem</option>
-                        <option value="koztisztasag">Köztisztaság</option>
-                        <option value="kozlekedes">Közlekedés és forgalom</option>
-                        <option value="zaj">Zaj rend és együttélés</option>
-                        <option value="kozmuvek">Közművek</option>
-                        <option value="allat">Állatokkal kapcsolatos ügyek</option>
-                        <option value="intezmenyek">Intézmények és szolgáltatások</option>
-                        <option value="digitalis">Digitális / ügyintézési problémák</option>
-                        <option value="egyeb">Egyéb</option>
-                    </select>
-                    <input type="number" placeholder="Szélesség" value={form.latitude}
-                        onChange={(e) =>
-                            setForm({ ...form, latitude: e.target.value })
-                        } required />
+                <h2><u>Probléma bejelentése</u></h2>
+                <Card>
+                    <form onSubmit={handleSubmit}>
+                        <CardContent>
+                            <Input placeholder="Cím" value={form.title}
+                                onChange={(e) =>
+                                    setForm({ ...form, title: e.target.value })
+                                } required />
+                            <Select
+                                value={form.category}
+                                onValueChange={(value: string) => setForm({ ...form, category: value })}
+                                required>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Válassz kategóriát" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="kozterulet">Közterület és infrastruktúra</SelectItem>
+                                    <SelectItem value="kornyezet">Zöldterület és környezetvédelem</SelectItem>
+                                    <SelectItem value="koztisztasag">Köztisztaság</SelectItem>
+                                    <SelectItem value="kozlekedes">Közlekedés és forgalom</SelectItem>
+                                    <SelectItem value="zaj">Zaj rend és együttélés</SelectItem>
+                                    <SelectItem value="kozmuvek">Közművek</SelectItem>
+                                    <SelectItem value="allat">Állatokkal kapcsolatos ügyek</SelectItem>
+                                    <SelectItem value="intezmenyek">Intézmények és szolgáltatások</SelectItem>
+                                    <SelectItem value="digitalis">Digitális / ügyintézési problémák</SelectItem>
+                                    <SelectItem value="egyeb">Egyéb</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <Input type="number" placeholder="Szélesség" value={form.latitude}
+                                onChange={(e) =>
+                                    setForm({ ...form, latitude: e.target.value })
+                                } required />
 
-                    <input type="number" placeholder="Hosszúság" value={form.longitude}
-                        onChange={(e) =>
-                            setForm({ ...form, longitude: e.target.value })
-                        } required />
+                            <Input type="number" placeholder="Hosszúság" value={form.longitude}
+                                onChange={(e) =>
+                                    setForm({ ...form, longitude: e.target.value })
+                                } required />
 
-                    <textarea placeholder="Leírás" value={form.description}
-                        onChange={(e) =>
-                            setForm({ ...form, description: e.target.value })
-                        } required />
-
-                    <div>
-                        <button type="submit">Mentés</button>
-                        <button type="button" onClick={onClose}>Mégse</button>
-                    </div>
-                </form>
+                            <Textarea placeholder="Leírás" value={form.description}
+                                onChange={(e) =>
+                                    setForm({ ...form, description: e.target.value })
+                                } required />
+                        </CardContent>
+                        <CardFooter>
+                            <Button type="submit">Mentés</Button>
+                            <Button type="button" variant="destructive" onClick={onClose}>
+                                Mégse
+                            </Button>
+                        </CardFooter>
+                    </form>
+                </Card>
             </div>
         </div>
     );
