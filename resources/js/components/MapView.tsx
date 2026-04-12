@@ -126,7 +126,7 @@ export default function MapView() {
             <Checkbox
               id="issue"
               checked={filters.issue}
-              onCheckedChange={(checked) =>
+              onCheckedChange={(checked: boolean) =>
                 setFilters({ ...filters, issue: !!checked })
               }
             />
@@ -139,7 +139,7 @@ export default function MapView() {
             <Checkbox
               id="event"
               checked={filters.event}
-              onCheckedChange={(checked) =>
+              onCheckedChange={(checked: boolean) =>
                 setFilters({ ...filters, event: !!checked })
               }
             />
