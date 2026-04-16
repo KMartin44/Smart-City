@@ -17,6 +17,7 @@ type Item = {
     category?: string;
     latitude?: number;
     longitude?: number;
+    is_done?: boolean;
     start_time?: string;
     end_time?: string;
     created_at: string;
@@ -86,6 +87,14 @@ export default function Show({ type, id }: ShowProps) {
 
                             <div>
                                 <strong>Longitude:</strong> {item.longitude ?? '-'}
+                            </div>
+                        </>
+                    )}
+
+                    {type === 'issue' && (
+                        <>
+                            <div>
+                                <strong>Kész van már?</strong> {item.is_done == null ? '-' : Number(item.is_done) === 1 ? 'Kész van' : 'Nincs kész'}
                             </div>
                         </>
                     )}
