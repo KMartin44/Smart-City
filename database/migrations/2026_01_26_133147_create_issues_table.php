@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->string("title");
             $table->decimal("latitude", 11, 8);
             $table->decimal("longitude", 11, 8);
+            $table->boolean("is_done")->default(false);
             $table->text("description");
             $table->unsignedBigInteger("user_id");
             $table->timestamps();
