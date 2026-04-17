@@ -1,4 +1,13 @@
 import { router } from '@inertiajs/react';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 
 type Type = 'event' | 'issue' | 'statement';
 
@@ -37,32 +46,51 @@ export default function AdminTable({ items, type }: TableProps) {
     };
 
     return (
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Cím</th>
-                    <th>Műveletek</th>
-                </tr>
-            </thead>
+        <div>
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>ID</TableHead>
+                        <TableHead>Cím</TableHead>
+                        <TableHead>Műveletek</TableHead>
+                    </TableRow>
+                </TableHeader>
 
-            <tbody>
-                {items.map((item) => (
-                    <tr key={item.id}>
-                        <td>{item.id}</td>
+                <TableBody>
+                    {items.map((item) => (
+                        <TableRow key={item.id}>
+                            <TableCell>{item.id}</TableCell>
 
-                        <td>{item.title}</td>
+                            <TableCell>
+                                {item.title}
+                            </TableCell>
 
-                        <td>
-                            <button onClick={() => router.get(`/admin/show/${type}/${item.id}`)}>Részletek</button>
+                            <TableCell>
+                                <Button
+                                    variant="outline"
+                                    onClick={() => router.get(`/admin/show/${type}/${item.id}`)}
+                                >
+                                    Részletek
+                                </Button>
 
-                            <button onClick={() => router.get(`/admin/edit/${type}/${item.id}`)}>Módosítás</button>
+                                <Button
+                                    variant="secondary"
+                                    onClick={() => router.get(`/admin/edit/${type}/${item.id}`)}
+                                >
+                                    Módosítás
+                                </Button>
 
-                            <button onClick={() => deleteItem(item.id)}>Törlés</button>
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
+                                <Button
+                                    variant="destructive"
+                                    onClick={() => deleteItem(item.id)}
+                                >
+                                    Törlés
+                                </Button>
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </div>
     );
 }
