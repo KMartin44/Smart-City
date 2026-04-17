@@ -17,6 +17,7 @@ type Issue = {
   title: string;
   latitude: number;
   longitude: number;
+  is_done: boolean;
 };
 
 type MapItem = {
@@ -29,14 +30,16 @@ type MapItem = {
 
 const icons = {
   issue: new L.Icon({
-    iconUrl: "/icons/red-pin.svg",
+    iconUrl: "/icons/circle-alert.svg",
     iconSize: [25, 41],
     iconAnchor: [12, 41],
+    popupAnchor: [0, -35]
   }),
   event: new L.Icon({
-    iconUrl: "/icons/blue-pin.svg",
+    iconUrl: "/icons/calendar.svg",
     iconSize: [25, 41],
     iconAnchor: [12, 41],
+    popupAnchor: [0, -35]
   }),
 };
 
@@ -96,7 +99,9 @@ export default function MapView() {
         lat: e.latitude,
         lng: e.longitude,
       })),
-      ...issues.map((i) => ({
+      ...issues
+      .filter((i) => !i.is_done)
+      .map((i) => ({
         id: i.id,
         title: i.title,
         category: "issue" as const,
