@@ -50,6 +50,10 @@ export default function IssuesPage() {
         fetchIssues();
     }, []);
 
+    const canDeleteIssue = (issue: Issue) => {
+        return user && (user.type === 'admin' || user.id === issue.user_id);
+    };
+
     return (
         <MainLayout>
             <div className="space-y-4">
@@ -71,12 +75,15 @@ export default function IssuesPage() {
                             <CardHeader>
                                 <div className="flex items-center justify-between">
                                     <CardTitle>{issue.title}</CardTitle>
+                                        {canDeleteIssue(issue) && (
                                         <Button
                                             variant="destructive"
                                             size="sm"
+                                            onClick={() => {}}
                                         >
                                             Törlés
                                         </Button>
+                                    )}
                                 </div>
                             </CardHeader>
                             <CardContent className="space-y-2">

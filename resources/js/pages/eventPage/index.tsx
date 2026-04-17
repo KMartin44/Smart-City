@@ -49,6 +49,10 @@ export default function EventsPage() {
         fetchEvents();
     }, []);
 
+    const canDeleteEvent = (event: Event) => {
+        return user && (user.type === 'admin' || user.id === event.user_id);
+    };
+
     return (
         <MainLayout>
             <div className="space-y-6">
@@ -70,12 +74,15 @@ export default function EventsPage() {
                             <CardHeader>
                                 <div className="flex items-center justify-between">
                                     <CardTitle>{event.title}</CardTitle>
-                                    <Button
+                                    {canDeleteEvent(event) && (
+                                        <Button
                                             variant="destructive"
                                             size="sm"
+                                            onClick={() => {}}
                                         >
                                             Törlés
                                         </Button>
+                                    )}
                                 </div>
                             </CardHeader>
 
