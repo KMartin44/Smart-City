@@ -1,9 +1,14 @@
-import React, { useState } from "react";
-import { Card, CardContent, CardFooter } from "../ui/card";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { usePage } from '@inertiajs/react';
+import React, { useState } from 'react';
+
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import 'leaflet/dist/leaflet.css';
+import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet';
 
 type Props = {
     isOpen: boolean;
@@ -11,104 +16,155 @@ type Props = {
     onCreated: () => void;
 };
 
-export default function CreateEventModal({
-    isOpen,
-    onClose,
-    onCreated,
-}: Props) {
-    const [form, setForm] = useState({
-        category: "",
-        title: "",
-        latitude: "",
-        longitude: "",
-        description: "",
-        start_time: "",
-        end_time: "",
+export default function CreateEventModal({ isOpen, onClose, onCreated }: Props) {
+    const { auth } = usePage().props as any;
+    const userId = auth?.user?.id;
+
+    const [data, setData] = useState({
+        category: '',
+        title: '',
+        latitude: '',
+        longitude: '',
+        description: '',
+        start_time: '',
+        end_time: '',
     });
 
-    if (!isOpen) {
-        return null;
-    }
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        await fetch("/api/events", {
-            method: "POST",
+        if (!userId) {
+            alert('Be kell jelentkezned, hogy eseményt hozhass létre.');
+            return;
+        }
+
+        const res = await fetch('/api/events', {
+            method: 'POST',
+            credentials: 'same-origin',
             headers: {
-                "Content-Type": "application/json",
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                ...form,
-                latitude: parseFloat(form.latitude),
-                longitude: parseFloat(form.longitude),
-                user_id : 1,
-            }),
+            body: JSON.stringify({ ...data, user_id: userId }),
         });
+
+        if (!res.ok) {
+            const text = await res.text();
+            throw new Error(`Hiba a létrehozáskor: ${res.status} ${text}`);
+        }
+
         onCreated();
         onClose();
     };
 
-    return (
-        <div>
-            <div>
-                <Card>
-                    <form onSubmit={handleSubmit}>
-                        <CardContent>
-                            <Input placeholder="Cím" value={form.title}
-                                onChange={(e) =>
-                                    setForm({ ...form, title: e.target.value })
-                                } required />
-                            <Select
-                                value={form.category}
-                                onValueChange={(value: string) => setForm({ ...form, category: value })}
-                                required>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Válassz kategóriát" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="kultura">Kulturális események</SelectItem>
-                                    <SelectItem value="kozossegi">Közösségi és civil események</SelectItem>
-                                    <SelectItem value="oktatas">Oktatás és ismeretterjesztés</SelectItem>
-                                    <SelectItem value="sport">Sport és szabadidő</SelectItem>
-                                    <SelectItem value="csaladi">Gyermek- és családi programok</SelectItem>
-                                    <SelectItem value="kreativ">Kreatív és kézműves</SelectItem>
-                                    <SelectItem value="vallasi">Vallási események</SelectItem>
-                                    <SelectItem value="onkormanyzati">Önkormányzati és hivatalos események</SelectItem>
-                                    <SelectItem value="egyeb">Egyéb</SelectItem>
-                                </SelectContent>
-                            </Select>
-                            <Input type="number" placeholder="Szélesség" value={form.latitude}
-                                onChange={(e) =>
-                                    setForm({ ...form, latitude: e.target.value })
-                                } required />
+    function LocationPicker() {
+        const [position, setPosition] = useState<[number, number]>(
+            data.latitude && data.longitude ? [parseFloat(data.latitude), parseFloat(data.longitude)] : [47.4979, 19.0402],
+        );
 
-                            <Input type="number" placeholder="Hosszúság" value={form.longitude}
-                                onChange={(e) =>
-                                    setForm({ ...form, longitude: e.target.value })
-                                } required />
-                            <Textarea placeholder="Leírás" value={form.description}
-                                onChange={(e) =>
-                                    setForm({ ...form, description: e.target.value })
-                                } required />
-                            <Input type="datetime-local" placeholder="Kezdés időpontja" value={form.start_time}
-                                onChange={(e) =>
-                                    setForm({ ...form, start_time: e.target.value })
-                                } required />
-                            <Input type="datetime-local" placeholder="Befejezés időpontja" value={form.end_time}
-                                onChange={(e) =>
-                                    setForm({ ...form, end_time: e.target.value })
-                                } required />
-                        </CardContent>
-                        <CardFooter>
-                            <Button type="submit">Mentés</Button>
-                            <Button type="button" variant="destructive" onClick={onClose}>
-                                Mégse
-                            </Button>
-                        </CardFooter>
-                    </form>
-                </Card>
-            </div>
-        </div>
+        useMapEvents({
+            click(e) {
+                const { lat, lng } = e.latlng;
+                setPosition([lat, lng]);
+                setData((prev) => ({
+                    ...prev,
+                    latitude: lat.toString(),
+                    longitude: lng.toString(),
+                }));
+            },
+        });
+
+        return <Marker position={position} />;
+    }
+
+    return (
+        <Dialog open={isOpen} onOpenChange={onClose}>
+            <DialogContent className="sm:max-w-lg">
+                <DialogHeader>
+                    <DialogTitle>Esemény hozzáadása</DialogTitle>
+                </DialogHeader>
+
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="space-y-2">
+                        <Label>Cím</Label>
+                        <Input name="title" value={data.title} onChange={handleChange} required />
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label>Kategória</Label>
+                        <Select
+                            value={data.category || ''}
+                            onValueChange={(value) => {
+                                setData((prev) => ({
+                                    ...prev,
+                                    category: value || '',
+                                }));
+                            }}
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Válassz kategóriát" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="kultura">Kulturális</SelectItem>
+                                <SelectItem value="kozossegi">Közösségi</SelectItem>
+                                <SelectItem value="oktatas">Oktatás</SelectItem>
+                                <SelectItem value="sport">Sport</SelectItem>
+                                <SelectItem value="csaladi">Családi</SelectItem>
+                                <SelectItem value="kreativ">Kreatív</SelectItem>
+                                <SelectItem value="vallasi">Vallási</SelectItem>
+                                <SelectItem value="onkormanyzati">Önkormányzati</SelectItem>
+                                <SelectItem value="egyeb">Egyéb</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label>Hely kiválasztása</Label>
+                        <MapContainer
+                            center={data.latitude && data.longitude ? [parseFloat(data.latitude), parseFloat(data.longitude)] : [47.4979, 19.0402]}
+                            zoom={13}
+                            style={{ height: '200px', width: '100%' }}
+                        >
+                            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                            <LocationPicker />
+                        </MapContainer>
+                        <div className="text-sm text-muted-foreground">
+                            Kiválasztott koordináták: {data.latitude || '-'} , {data.longitude || '-'}
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label>Kezdés</Label>
+                            <Input type="datetime-local" name="start_time" value={data.start_time} onChange={handleChange} required />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Befejezés</Label>
+                            <Input type="datetime-local" name="end_time" value={data.end_time} onChange={handleChange} required />
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label>Leírás</Label>
+                        <Textarea name="description" value={data.description} onChange={handleChange} required />
+                    </div>
+
+                    <DialogFooter>
+                        <Button type="button" variant="secondary" onClick={onClose}>
+                            Mégse
+                        </Button>
+                        <Button type="submit">Mentés</Button>
+                    </DialogFooter>
+                </form>
+            </DialogContent>
+        </Dialog>
     );
 }
