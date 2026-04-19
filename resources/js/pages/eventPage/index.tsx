@@ -53,6 +53,24 @@ export default function EventsPage() {
         return user && (user.type === 'admin' || user.id === event.user_id);
     };
 
+    const deleteEvent = async (event: Event) => {
+        const confirmed = window.confirm(`Biztosan törölni szeretnéd ezt az eseményt?\n\n${event.title}`);
+        if (!confirmed) return;
+
+        const res = await fetch(`/api/events/${event.id}`, {
+            method: 'DELETE',
+            credentials: 'same-origin',
+            headers: { Accept: 'application/json' },
+        });
+
+        if (!res.ok) {
+            alert('A törlés sikertelen volt.');
+            return;
+        }
+
+        fetchEvents();
+    };
+
     return (
         <div className="community-feed-page">
             <section className="community-feed-hero">
@@ -96,7 +114,7 @@ export default function EventsPage() {
                                             <Button
                                                 variant="destructive"
                                                 size="sm"
-                                                onClick={() => {}}
+                                                onClick={() => deleteEvent(event)}
                                                 className="community-feed-card-delete-button"
                                             >
                                                 Törlés

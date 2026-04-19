@@ -75,7 +75,6 @@ export function AppNavbar() {
         <nav className="app-navbar">
             <div className="app-navbar-inner">
                 <div className="app-navbar-row">
-                    {/* Brand */}
                     <div className="app-navbar-brand-wrap">
                         <a href="/" aria-label="SmartCity home" className="app-navbar-brand-link">
                             <div className="app-navbar-logo">
@@ -88,7 +87,6 @@ export function AppNavbar() {
                         </a>
                     </div>
 
-                    {/* Nav */}
                     <div className="app-navbar-links-wrap">
                         <div className="app-navbar-links">
                         {visibleItems.map((item) => {
@@ -108,7 +106,6 @@ export function AppNavbar() {
                         </div>
                     </div>
 
-                    {/* Account */}
                     <div className="app-navbar-account-wrap">
                         <DropdownMenu>
                             <DropdownMenuTrigger className="app-navbar-account-button">

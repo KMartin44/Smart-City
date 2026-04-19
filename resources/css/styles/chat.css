@@ -1,11 +1,8 @@
-/* ===================== CHAT PAGE ===================== */
-
 .chat-page {
     min-height: 100vh;
     background-color: #f8fafc;
 }
 
-/* Hero */
 .chat-hero {
     background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 60%, #1e3a8a 100%);
     padding: 2.5rem 1rem 2rem;
@@ -35,14 +32,12 @@
     margin: 0;
 }
 
-/* Section */
 .chat-section {
     padding: 2rem 1rem;
     max-width: 56rem;
     margin: 0 auto;
 }
 
-/* Chat box wrapper */
 .chat-box {
     background: #ffffff;
     border: 1px solid #e2e8f0;
@@ -55,7 +50,6 @@
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.06);
 }
 
-/* Messages area */
 .chat-messages {
     flex: 1;
     overflow-y: auto;
@@ -76,7 +70,6 @@
     font-style: italic;
 }
 
-/* Message wrappers */
 .chat-message-wrapper {
     display: flex;
     flex-direction: column;
@@ -89,7 +82,6 @@
     align-items: flex-end;
 }
 
-/* Sender name */
 .chat-message-sender {
     font-size: 0.72rem;
     font-weight: 600;
@@ -98,7 +90,6 @@
     padding: 0 0.25rem;
 }
 
-/* Bubble */
 .chat-message-bubble {
     background: #f1f5f9;
     color: #1e293b;
@@ -115,7 +106,6 @@
     border-radius: 1rem 1rem 0.25rem 1rem;
 }
 
-/* Timestamp */
 .chat-message-time {
     font-size: 0.68rem;
     color: #94a3b8;
@@ -123,7 +113,6 @@
     padding: 0 0.25rem;
 }
 
-/* Delete button (admin / own message) */
 .chat-message-delete {
     background: none;
     border: none;
@@ -139,14 +128,12 @@
     color: #ef4444;
 }
 
-/* Divider between messages area and input */
 .chat-input-divider {
     border: none;
     border-top: 1px solid #e2e8f0;
     margin: 0;
 }
 
-/* Input area */
 .chat-input-area {
     display: flex;
     gap: 0.5rem;
@@ -202,7 +189,6 @@
     cursor: not-allowed;
 }
 
-/* Not logged in notice */
 .chat-login-notice {
     padding: 0.75rem 1rem;
     text-align: center;

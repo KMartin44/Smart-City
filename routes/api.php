@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\StatementController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\IssueController;
 use App\Http\Controllers\Api\ChatController;
+use App\Http\Controllers\Api\AdminUserController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -21,6 +22,10 @@ Route::get('issues', [IssueController::class, 'index']);
 Route::get('issues/{issue}', [IssueController::class, 'show']);
 
 Route::middleware('auth:web')->group(function () {
+    Route::get('admin/users', [AdminUserController::class, 'index']);
+    Route::put('admin/users/{user}/role', [AdminUserController::class, 'updateRole']);
+    Route::delete('admin/users/{user}', [AdminUserController::class, 'destroy']);
+
     Route::get('chat', [ChatController::class, 'index']);
     Route::post('chat', [ChatController::class, 'store']);
     Route::delete('chat/{chatMessage}', [ChatController::class, 'destroy']);

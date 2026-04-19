@@ -43,25 +43,48 @@ export default function CreateIssueModal({ isOpen, onClose, onCreated }: Props) 
             return;
         }
 
+        if (!data.category) {
+            alert('Válassz kategóriát.');
+            return;
+        }
+
+        const latitude = Number(data.latitude);
+        const longitude = Number(data.longitude);
+
+        if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+            alert('Kattints a térképre a helyszín kiválasztásához.');
+            return;
+        }
+
         const res = await fetch('/api/issues', {
             method: 'POST',
             credentials: 'same-origin',
             headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 ...data,
-                latitude: parseFloat(data.latitude),
-                longitude: parseFloat(data.longitude),
-                user_id: userId
+                latitude,
+                longitude,
             }),
         });
 
         if (!res.ok) {
-            const text = await res.text();
-            throw new Error(`Hiba a létrehozáskor: ${res.status} ${text}`);
+            const payload = await res.json().catch(() => null);
+            const validationMessage = payload?.errors
+                ? Object.values(payload.errors).flat()[0]
+                : null;
+            alert(validationMessage || payload?.message || 'Hiba történt a probléma létrehozásakor.');
+            return;
         }
 
         onCreated();
         onClose();
+        setData({
+            category: '',
+            title: '',
+            latitude: '',
+            longitude: '',
+            description: '',
+        });
     };
 
     function LocationPicker() {
@@ -100,10 +123,11 @@ export default function CreateIssueModal({ isOpen, onClose, onCreated }: Props) 
                     <div className="community-modal-field">
                         <Label className="community-modal-label">Kategória</Label>
                         <Select
+                            value={data.category || undefined}
                             onValueChange={(value) =>
                                 setData((prev) => ({
                                     ...prev,
-                                    category: value as string,
+                                    category: value || '',
                                 }))
                             }
                         >

@@ -58,6 +58,24 @@ export default function IssuesPage() {
         return user && (user.type === 'admin' || user.id === issue.user_id);
     };
 
+    const deleteIssue = async (issue: Issue) => {
+        const confirmed = window.confirm(`Biztosan törölni szeretnéd ezt a problémát?\n\n${issue.title}`);
+        if (!confirmed) return;
+
+        const res = await fetch(`/api/issues/${issue.id}`, {
+            method: 'DELETE',
+            credentials: 'same-origin',
+            headers: { Accept: 'application/json' },
+        });
+
+        if (!res.ok) {
+            alert('A törlés sikertelen volt.');
+            return;
+        }
+
+        fetchIssues();
+    };
+
     const toggleDone = async (issue: Issue) => {
         await fetch(`/api/issues/${issue.id}`, {
             method: 'PUT',
@@ -111,7 +129,7 @@ export default function IssuesPage() {
                                             <Button
                                                 variant="destructive"
                                                 size="sm"
-                                                onClick={() => {}}
+                                                onClick={() => deleteIssue(issue)}
                                                 className="community-feed-card-delete-button"
                                             >
                                                 Törlés

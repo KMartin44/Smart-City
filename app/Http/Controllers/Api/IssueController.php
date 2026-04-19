@@ -23,7 +23,19 @@ class IssueController extends Controller
     {
         $this->authorize('create', Issue::class);
 
-        $issue = Issue::create($request->all());
+        $validated = $request->validate([
+            'category' => 'required|in:kozterulet,kornyezet,koztisztasag,kozlekedes,zaj,kozmuvek,allat,intezmenyek,digitalis,egyeb',
+            'title' => 'required|string|max:255',
+            'latitude' => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180',
+            'description' => 'required|string',
+        ]);
+
+        $issue = Issue::create([
+            ...$validated,
+            'user_id' => $request->user()->id,
+            'is_done' => false,
+        ]);
 
         return response()->json($issue, 201);
     }

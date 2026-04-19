@@ -54,6 +54,19 @@ export default function CreateEventModal({ isOpen, onClose, onCreated }: Props) 
             return;
         }
 
+        if (!data.category) {
+            alert('Válassz kategóriát.');
+            return;
+        }
+
+        const latitude = Number(data.latitude);
+        const longitude = Number(data.longitude);
+
+        if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+            alert('Kattints a térképre a helyszín kiválasztásához.');
+            return;
+        }
+
         const res = await fetch('/api/events', {
             method: 'POST',
             credentials: 'same-origin',
@@ -61,16 +74,33 @@ export default function CreateEventModal({ isOpen, onClose, onCreated }: Props) 
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ ...data, user_id: userId }),
+            body: JSON.stringify({
+                ...data,
+                latitude,
+                longitude,
+            }),
         });
 
         if (!res.ok) {
-            const text = await res.text();
-            throw new Error(`Hiba a létrehozáskor: ${res.status} ${text}`);
+            const payload = await res.json().catch(() => null);
+            const validationMessage = payload?.errors
+                ? Object.values(payload.errors).flat()[0]
+                : null;
+            alert(validationMessage || payload?.message || 'Hiba történt az esemény létrehozásakor.');
+            return;
         }
 
         onCreated();
         onClose();
+        setData({
+            category: '',
+            title: '',
+            latitude: '',
+            longitude: '',
+            description: '',
+            start_time: '',
+            end_time: '',
+        });
     };
 
     function LocationPicker() {

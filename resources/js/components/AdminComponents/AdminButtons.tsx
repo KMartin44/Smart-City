@@ -1,6 +1,6 @@
 type AdminButtonsProps = {
-    setType: (type: 'event' | 'issue' | 'statement') => void;
-    active: 'event' | 'issue' | 'statement' | null;
+    setType: (type: 'event' | 'issue' | 'statement' | 'user') => void;
+    active: 'event' | 'issue' | 'statement' | 'user' | null;
 };
 
 export default function AdminButtons({ setType, active }: AdminButtonsProps) {
@@ -23,6 +23,12 @@ export default function AdminButtons({ setType, active }: AdminButtonsProps) {
                 onClick={() => setType('statement')}
             >
                 Közlemények
+            </button>
+            <button
+                className={`admin-type-btn${active === 'user' ? ' admin-type-btn-active' : ''}`}
+                onClick={() => setType('user')}
+            >
+                Felhasználók
             </button>
         </div>
     );

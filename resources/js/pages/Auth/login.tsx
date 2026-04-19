@@ -15,27 +15,25 @@ export default function Login() {
 
     return (
         <div className="auth-page">
-            {/* Brand panel */}
             <div className="auth-brand-panel">
                 <div className="auth-brand-logo">
-                    <Link href="/" className="auth-brand-logo-name">Okos Város</Link>
+                    <Link href="/" className="auth-brand-logo-name">SmartCity</Link>
                 </div>
 
                 <div className="auth-brand-headline">
-                    <h1 className="auth-brand-title">Üdvözöljük<br />az Okos Város<br />platformon!</h1>
+                    <h1 className="auth-brand-title">Üdvözöljük<br />az SmartCity<br />platformon!</h1>
                     <p className="auth-brand-subtitle">
                         Jelentse be a közösségi problémákat, kövesse nyomon az eseményeket, és legyen részese városának fejlődésének.
                     </p>
                 </div>
 
-                <p className="auth-brand-footer">© 2026 Okos Város - Együtt épül a jó város</p>
+                <p className="auth-brand-footer">© 2026 SmartCity - Együtt épül a jó város</p>
             </div>
 
-            {/* Form panel */}
             <div className="auth-form-panel">
                 <div className="auth-form-wrap">
                     <div className="auth-mobile-brand">
-                        <Link href="/" className="auth-mobile-brand-name">Okos Város</Link>
+                        <Link href="/" className="auth-mobile-brand-name">SmartCity</Link>
                     </div>
 
                     <div className="auth-form-header">

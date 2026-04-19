@@ -17,7 +17,20 @@ class EventController extends Controller
     {
         $this->authorize('create', Event::class);
 
-        $event = Event::create($request->all());
+        $validated = $request->validate([
+            'category' => 'required|in:kultura,kozossegi,oktatas,sport,csaladi,kreativ,vallasi,onkormanyzati,egyeb',
+            'title' => 'required|string|max:255',
+            'latitude' => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180',
+            'description' => 'required|string',
+            'start_time' => 'required|date',
+            'end_time' => 'required|date|after:start_time',
+        ]);
+
+        $event = Event::create([
+            ...$validated,
+            'user_id' => $request->user()->id,
+        ]);
 
         return response()->json($event, 201);
     }

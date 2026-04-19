@@ -16,7 +16,6 @@ function MainPage({
 
     return (
         <div className="main-page">
-            {/* Hero */}
             <section className="main-hero">
                 <div className="main-hero-inner">
                     <div className="main-hero-content">
@@ -35,7 +34,7 @@ function MainPage({
                 </div>
             </section>
 
-            {/* Features */}
+
             <section className="main-section">
                 <div className="main-section-inner">
                     <h2 className="main-section-title">Főbb Funkciók</h2>
@@ -51,7 +50,7 @@ function MainPage({
                             <p className="main-card-copy">
                                 Jelents be közlekedési, közterületi vagy közművi problémákat egyszerűen és gyorsan. Közösen oldjuk meg őket!
                             </p>
-                            <Button variant="outline" className="main-card-button" onClick={() => window.location.href = '/statements'}>
+                            <Button variant="outline" className="main-card-button" onClick={() => window.location.href = '/issues'}>
                                 Probléma Bejelentése
                             </Button>
                         </Card>
@@ -66,7 +65,7 @@ function MainPage({
                             <p className="main-card-copy">
                                 Fedezd fel a közeljövő eseményeit, fesztiváljait és közösségi programjait. Ne hagyj ki semmit!
                             </p>
-                            <Button variant="outline" className="main-card-button" onClick={() => window.location.href = '/map'}>
+                            <Button variant="outline" className="main-card-button" onClick={() => window.location.href = '/events'}>
                                 Események megtekintése
                             </Button>
                         </Card>
@@ -106,7 +105,7 @@ function MainPage({
                 </div>
             </section>
 
-            {/* Stats  */}
+
             <section className="main-stats">
                 <div className="main-stats-inner">
                     <h2 className="main-stats-title">SmartCity Statisztikák</h2>
@@ -128,7 +127,7 @@ function MainPage({
                 </div>
             </section>
 
-            {/* CTA */}
+
             {!hasUser && (
                 <section className="main-cta">
                     <div className="main-cta-inner">
@@ -150,7 +149,7 @@ function MainPage({
                 </section>
             )}
 
-            {/* Footer */}
+
             <footer className="main-footer">
                 <div className="main-footer-inner">
                     <p className="main-footer-copy">© 2026 SmartCity - Együtt épül a jó város</p>
@@ -160,7 +159,6 @@ function MainPage({
     );
 }
 
-// Inertia layout hozzárendelés
 MainPage.layout = (page: ReactNode) => (
     <MainLayout>{page}</MainLayout>
 );
