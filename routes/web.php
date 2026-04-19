@@ -37,3 +37,11 @@ Route::get('/login', [UserController::class, 'showLogin'])->name('login');
 Route::post('/login', [UserController::class, 'login']);
 
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+
+Route::get("/issues", function () {
+    return Inertia::render('issuePage/index');
+})->name('issues.index');
+
+Route::get("/events", function () {
+    return Inertia::render('eventPage/index');
+})->name('events.index');

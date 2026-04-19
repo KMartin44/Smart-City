@@ -1,3 +1,6 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { MainLayout } from '@/layouts/mainLayout';
 import { useEffect, useState } from 'react';
 
 type Type = 'event' | 'issue' | 'statement';
@@ -14,6 +17,7 @@ type Item = {
     category?: string;
     latitude?: number;
     longitude?: number;
+    is_done?: boolean;
     start_time?: string;
     end_time?: string;
     created_at: string;
@@ -50,57 +54,78 @@ export default function Show({ type, id }: ShowProps) {
     }
 
     return (
-        <div>
-            <h1>
-                {type === 'event' && 'Esemény részletek'}
-                {type === 'issue' && 'Problémabejelentés részletek'}
-                {type === 'statement' && 'Közlemény részletek'}
-            </h1>
+        <MainLayout>
+            <Card>
+                <CardHeader>
+                    <CardTitle>
+                        {type === 'event' && 'Esemény részletek'}
+                        {type === 'issue' && 'Problémabejelentés részletek'}
+                        {type === 'statement' && 'Közlemény részletek'}
+                    </CardTitle>
+                </CardHeader>
 
-            <p>
-                <strong>ID: </strong> {item.id}
-            </p>
+                <CardContent>
+                    <div>
+                        <strong>ID:</strong> {item.id}
+                    </div>
 
-            <p>
-                <strong>Cím: </strong> {item.title}
-            </p>
+                    <div>
+                        <strong>Cím:</strong> {item.title}
+                    </div>
 
-            {(type === 'event' || type === 'issue') && (
-                <p>
-                    <strong>Kategória: </strong> {item.category}
-                </p>
-            )}
+                    {(type === 'event' || type === 'issue') && (
+                        <div>
+                            <strong>Kategória:</strong> {item.category ?? '-'}
+                        </div>
+                    )}
 
-            {(type === 'event' || type === 'issue') && (
-                <>
-                    <p>
-                        <strong>Latitude: </strong> {item.latitude}
-                    </p>
-                    <p>
-                        <strong>Longitude: </strong> {item.longitude}
-                    </p>
-                </>
-            )}
+                    {(type === 'event' || type === 'issue') && (
+                        <>
+                            <div>
+                                <strong>Latitude:</strong> {item.latitude ?? '-'}
+                            </div>
 
-            {type === 'event' && (
-                <>
-                    <p>
-                        <strong>Kezdés: </strong> {item.start_time}
-                    </p>
-                    <p>
-                        <strong>Befejezés: </strong> {item.end_time}
-                    </p>
-                </>
-            )}
+                            <div>
+                                <strong>Longitude:</strong> {item.longitude ?? '-'}
+                            </div>
+                        </>
+                    )}
 
-            <p>
-                <strong>Leírás: </strong>
-            </p>
-            <p>{item.description}</p>
+                    {type === 'issue' && (
+                        <>
+                            <div>
+                                <strong>Kész van már?</strong> {item.is_done == null ? '-' : Number(item.is_done) === 1 ? 'Kész van' : 'Nincs kész'}
+                            </div>
+                        </>
+                    )}
 
-            <p>
-                <strong>Létrehozva: </strong> {item.created_at}
-            </p>
-        </div>
+                    {type === 'event' && (
+                        <>
+                            <div>
+                                <strong>Kezdés:</strong> {item.start_time ?? '-'}
+                            </div>
+
+                            <div>
+                                <strong>Befejezés:</strong> {item.end_time ?? '-'}
+                            </div>
+                        </>
+                    )}
+
+                    <Separator />
+
+                    <div>
+                        <strong>Leírás:</strong>
+                        <p>{item.description}</p>
+                    </div>
+
+                    <Separator />
+
+                    <div>
+                        <div>Létrehozva: {item.created_at}</div>
+                        <div>Frissítve: {item.updated_at}</div>
+                    </div>
+                </CardContent>
+            </Card>
+        </MainLayout>
     );
 }

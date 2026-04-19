@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+
 type AdminButtonsProps = {
     setType: (type: 'event' | 'issue' | 'statement') => void;
 };
@@ -5,9 +7,17 @@ type AdminButtonsProps = {
 export default function AdminButtons({ setType }: AdminButtonsProps) {
   return (
         <div>
-            <button onClick={() => setType('event')}>Események</button>
-            <button onClick={() => setType('issue')}>Problémabejelentések</button>
-            <button onClick={() => setType('statement')}>Közlemények</button>
+            <Button variant="outline" onClick={() => setType('event')}>
+                Események
+            </Button>
+
+            <Button variant="outline" onClick={() => setType('issue')}>
+                Problémabejelentések
+            </Button>
+
+            <Button variant="outline" onClick={() => setType('statement')}>
+                Közlemények
+            </Button>
         </div>
     );
 }

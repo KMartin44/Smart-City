@@ -16,6 +16,7 @@ class Issue extends Model
         'latitude',
         'longitude',
         'description',
+        'is_done',
         'user_id',
     ];
 }
