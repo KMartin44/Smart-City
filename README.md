@@ -124,14 +124,3 @@ database/
 ```
 
 ---
-
-## Éles build készítése
-
-```bash
-npm run build
-php artisan optimize
-```
-
-npm run build
-php artisan optimize
-```
