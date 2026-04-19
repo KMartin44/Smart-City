@@ -18,8 +18,8 @@ export function MainLayout({ children }) {
                 <SidebarProvider>
                     <div className="app-mobile-header">
                         <SidebarTrigger className="app-mobile-trigger" />
-                        <a href="/" className="app-mobile-brand-link" aria-label="Okos Város home">
-                            Okos Város
+                        <a href="/" className="app-mobile-brand-link" aria-label="SmartCity home">
+                            SmartCity
                         </a>
                         <DropdownMenu>
                             <DropdownMenuTrigger className="app-mobile-account-button" aria-label="Fiók menü megnyitása">

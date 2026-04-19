@@ -20,7 +20,7 @@ function MainPage({
             <section className="main-hero">
                 <div className="main-hero-inner">
                     <div className="main-hero-content">
-                        <h1 className="main-hero-title">Okos Város</h1>
+                        <h1 className="main-hero-title">SmartCity</h1>
                         {hasUser && (
                             <p className="main-hero-copy font-semibold text-lg mb-4 text-white/90">
                                 Üdvözöllek, {userName}!
@@ -109,7 +109,7 @@ function MainPage({
             {/* Stats  */}
             <section className="main-stats">
                 <div className="main-stats-inner">
-                    <h2 className="main-stats-title">Okos Város Statisztikák</h2>
+                    <h2 className="main-stats-title">SmartCity Statisztikák</h2>
 
                     <div className="main-stats-grid">
                         <div>
@@ -153,7 +153,7 @@ function MainPage({
             {/* Footer */}
             <footer className="main-footer">
                 <div className="main-footer-inner">
-                    <p className="main-footer-copy">© 2026 Okos Város - Együtt épül a jó város</p>
+                    <p className="main-footer-copy">© 2026 SmartCity - Együtt épül a jó város</p>
                 </div>
             </footer>
         </div>

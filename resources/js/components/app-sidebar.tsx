@@ -75,7 +75,7 @@ export function AppSidebar() {
                         <Home className="w-5 h-5 text-white" />
                     </div>
                     <div className="flex flex-col">
-                        <span className="app-sidebar-title">Okos Város</span>
+                        <span className="app-sidebar-title">SmartCity</span>
                         <span className="app-sidebar-subtitle">Platform</span>
                     </div>
                 </a>

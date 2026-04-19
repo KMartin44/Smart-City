@@ -77,12 +77,12 @@ export function AppNavbar() {
                 <div className="app-navbar-row">
                     {/* Brand */}
                     <div className="app-navbar-brand-wrap">
-                        <a href="/" aria-label="Okos Város home" className="app-navbar-brand-link">
+                        <a href="/" aria-label="SmartCity home" className="app-navbar-brand-link">
                             <div className="app-navbar-logo">
                                 <Home className="w-4 h-4 text-white" />
                             </div>
                             <div className="app-navbar-brand-text">
-                                <span className="app-navbar-brand-title">Okos Város</span>
+                                <span className="app-navbar-brand-title">Smart City</span>
                                 <span className="app-navbar-brand-subtitle">Platform</span>
                             </div>
                         </a>

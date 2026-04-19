@@ -25,24 +25,24 @@ export default function Register() {
             {/* Brand panel */}
             <div className="auth-brand-panel">
                 <div className="auth-brand-logo">
-                    <Link href="/" className="auth-brand-logo-name">Okos Város</Link>
+                    <Link href="/" className="auth-brand-logo-name">SmartCity</Link>
                 </div>
 
                 <div className="auth-brand-headline">
-                    <h1 className="auth-brand-title">Csatlakozzon<br />az Okos Város<br />közösséghez!</h1>
+                    <h1 className="auth-brand-title">Csatlakozzon<br />az SmartCity<br />közösséghez!</h1>
                     <p className="auth-brand-subtitle">
                         Regisztráljon és vegyen részt aktívan városa életében — jelezzen problémákat, kövesse az eseményeket.
                     </p>
                 </div>
 
-                <p className="auth-brand-footer">© 2026 Okos Város - Együtt épül a jó város</p>
+                <p className="auth-brand-footer">© 2026 SmartCity - Együtt épül a jó város</p>
             </div>
 
             {/* Form panel */}
             <div className="auth-form-panel">
                 <div className="auth-form-wrap">
                     <div className="auth-mobile-brand">
-                        <Link href="/" className="auth-mobile-brand-name">Okos Város</Link>
+                        <Link href="/" className="auth-mobile-brand-name">SmartCity</Link>
                     </div>
 
                     <div className="auth-form-header">
