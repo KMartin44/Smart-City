@@ -21,6 +21,8 @@ class IssueController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Issue::class);
+
         $issue = Issue::create($request->all());
 
         return response()->json($issue, 201);
@@ -39,7 +41,10 @@ class IssueController extends Controller
      */
     public function update(Request $request, Issue $issue)
     {
-        $issue->update($request->all());
+        $this->authorize('update', $issue);
+
+        $issue->update($request->only('is_done'));
+
         return response()->json(['data' => $issue], 200);
     }
 
@@ -48,7 +53,11 @@ class IssueController extends Controller
      */
     public function destroy(Issue $issue)
     {
+        $this->authorize('delete', $issue);
+
         $issue->delete();
+
         return response()->noContent();
     }
 }
+

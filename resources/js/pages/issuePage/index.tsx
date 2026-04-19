@@ -1,6 +1,6 @@
-import CreateIssueModal from '@/components/IssueComponents/CreateIssueModal';
+﻿import CreateIssueModal from '@/components/IssueComponents/CreateIssueModal';
 import { MainLayout } from '@/layouts/mainLayout';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { usePage } from '@inertiajs/react';
@@ -12,6 +12,7 @@ type Issue = {
     description: string;
     latitude: number;
     longitude: number;
+    is_done: boolean;
     user_id: number;
 };
 
@@ -35,16 +36,19 @@ export default function IssuesPage() {
     const [showModal, setShowModal] = useState(false);
 
     const fetchIssues = async () => {
-    const res = await fetch('api/issues');
-    const data = await res.json();
-    setIssues(
-        data.map((issue: any) => ({
-            ...issue,
-            latitude: parseFloat(issue.latitude),
-            longitude: parseFloat(issue.longitude),
-        }))
-    );
-};
+        const res = await fetch('/api/issues', {
+            credentials: 'same-origin',
+            headers: { Accept: 'application/json' },
+        });
+        const data = await res.json();
+        setIssues(
+            data.map((issue: any) => ({
+                ...issue,
+                latitude: parseFloat(issue.latitude),
+                longitude: parseFloat(issue.longitude),
+            }))
+        );
+    };
 
     useEffect(() => {
         fetchIssues();
@@ -54,51 +58,108 @@ export default function IssuesPage() {
         return user && (user.type === 'admin' || user.id === issue.user_id);
     };
 
-    return (
-        <MainLayout>
-            <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-bold">Problémák</h1>
-                    <Button onClick={() => setShowModal(true)}>Probléma bejelentése</Button>
-                </div>
+    const toggleDone = async (issue: Issue) => {
+        await fetch(`/api/issues/${issue.id}`, {
+            method: 'PUT',
+            credentials: 'same-origin',
+            headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+            body: JSON.stringify({ is_done: !issue.is_done }),
+        });
+        fetchIssues();
+    };
 
-                {/* CreateIssueModal */}
+    return (
+        <div className="community-feed-page">
+            <section className="community-feed-hero">
+                <div className="community-feed-hero-inner">
+                    <div className="community-feed-hero-content">
+                        <h1 className="community-feed-hero-title">Problémák</h1>
+                        <p className="community-feed-hero-copy">
+                            Fedezd fel a város problémáit egy egységes, áttekinthető felületen.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section className="community-feed-section">
+                <div className="community-feed-section-inner">
+                    <div className="community-feed-toolbar">
+                        <div>
+                            <h2 className="community-feed-toolbar-title">Aktív problémák</h2>
+                            <p className="community-feed-toolbar-copy">
+                                Gyors áttekintés kategóriával, leírással és koordinátákkal.
+                            </p>
+                        </div>
+                        <Button variant="outline" className="community-feed-primary-button" onClick={() => setShowModal(true)}>
+                            Probléma bejelentése
+                        </Button>
+                    </div>
+
                 <CreateIssueModal
                     isOpen={showModal}
                     onClose={() => setShowModal(false)}
                     onCreated={fetchIssues}
                 />
 
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {issues.map((issue) => (
-                        <Card key={issue.id}>
-                            <CardHeader>
-                                <div className="flex items-center justify-between">
-                                    <CardTitle>{issue.title}</CardTitle>
+                    <div className="community-feed-grid">
+                        {issues.map((issue) => (
+                            <Card key={issue.id} className="community-feed-card">
+                                <CardHeader className="community-feed-card-header">
+                                    <div className="community-feed-card-title-row">
+                                        <CardTitle className="community-feed-card-title">{issue.title}</CardTitle>
                                         {canDeleteIssue(issue) && (
+                                            <Button
+                                                variant="destructive"
+                                                size="sm"
+                                                onClick={() => {}}
+                                                className="community-feed-card-delete-button"
+                                            >
+                                                Törlés
+                                            </Button>
+                                        )}
+                                    </div>
+                                </CardHeader>
+                                <CardContent className="community-feed-card-content">
+                                    <div className="flex flex-wrap items-center gap-2">
+                                        <div className="community-feed-card-badge">
+                                            {categoryLabels[issue.category] ?? issue.category}
+                                        </div>
+                                        <div className={`community-feed-card-badge ${
+                                            issue.is_done
+                                                ? '!bg-green-50 !text-green-700'
+                                                : '!bg-blue-50 !text-blue-700'
+                                        }`}>
+                                            {issue.is_done ? 'Megoldva' : 'Aktív'}
+                                        </div>
+                                    </div>
+                                    <p className="community-feed-card-description">{issue.description}</p>
+                                    <div className="community-feed-card-detail">
+                                        Koordináták: {issue.latitude.toFixed(6)}, {issue.longitude.toFixed(6)}
+                                    </div>
+                                    {(user?.type === 'admin' || user?.type === 'onkormanyzati') && (
                                         <Button
-                                            variant="destructive"
+                                            variant="outline"
                                             size="sm"
-                                            onClick={() => {}}
+                                            onClick={() => toggleDone(issue)}
+                                            className={`w-full mt-1 cursor-pointer ${
+                                                issue.is_done
+                                                    ? 'border-gray-300 text-gray-600 hover:bg-gray-50'
+                                                    : 'border-green-600 text-green-700 hover:bg-green-50'
+                                            }`}
                                         >
-                                            Törlés
+                                            {issue.is_done ? 'Megjelölés aktívként' : 'Megjelölés megoldottként'}
                                         </Button>
                                     )}
-                                </div>
-                            </CardHeader>
-                            <CardContent className="space-y-2">
-                                <div className="text-sm text-muted-foreground">
-                                    {categoryLabels[issue.category] ?? issue.category}
-                                </div>
-                                <p>{issue.description}</p>
-                                <div className="text-sm text-muted-foreground">
-                                    Koordináták: {issue.latitude.toFixed(6)}, {issue.longitude.toFixed(6)}
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
                 </div>
-            </div>
-        </MainLayout>
+            </section>
+        </div>
     );
 }
+
+IssuesPage.layout = (page: ReactNode) => (
+    <MainLayout>{page}</MainLayout>
+);

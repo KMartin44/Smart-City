@@ -7,7 +7,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 
 type Type = 'event' | 'issue' | 'statement';
 
@@ -45,52 +44,69 @@ export default function AdminTable({ items, type }: TableProps) {
         location.reload();
     };
 
+    const typeLabel = type === 'event' ? 'Események' : type === 'issue' ? 'Problémabejelentések' : 'Közlemények';
+
     return (
-        <div>
+        <div className="admin-table-card">
+            <div className="admin-table-header">
+                <span className="admin-table-title">
+                    {typeLabel}
+                    <span className="admin-table-count">({items.length} db)</span>
+                </span>
+            </div>
+            <div className="admin-table-scroll">
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>ID</TableHead>
-                        <TableHead>Cím</TableHead>
-                        <TableHead>Műveletek</TableHead>
+                        <TableHead className="admin-th">ID</TableHead>
+                        <TableHead className="admin-th">Cím</TableHead>
+                        <TableHead className="admin-th">Műveletek</TableHead>
                     </TableRow>
                 </TableHeader>
 
                 <TableBody>
+                    {items.length === 0 && (
+                        <TableRow>
+                            <TableCell colSpan={3} className="admin-empty">Nincs találat.</TableCell>
+                        </TableRow>
+                    )}
                     {items.map((item) => (
                         <TableRow key={item.id}>
-                            <TableCell>{item.id}</TableCell>
+                            <TableCell className="admin-td admin-td-id">{item.id}</TableCell>
 
-                            <TableCell>
+                            <TableCell className="admin-td">
                                 {item.title}
                             </TableCell>
 
-                            <TableCell>
-                                <Button
-                                    variant="outline"
+                            <TableCell className="admin-td">
+                                <div className="admin-td-actions">
+                                <button
+                                    className="admin-btn-view"
                                     onClick={() => router.get(`/admin/show/${type}/${item.id}`)}
                                 >
                                     Részletek
-                                </Button>
+                                </button>
 
-                                <Button
-                                    variant="secondary"
+                                <button
+                                    className="admin-btn-edit"
                                     onClick={() => router.get(`/admin/edit/${type}/${item.id}`)}
                                 >
                                     Módosítás
-                                </Button>
+                                </button>
 
-                                <Button
-                                    variant="destructive"
+                                <button
+                                    className="admin-btn-delete"
                                     onClick={() => deleteItem(item.id)}
                                 >
                                     Törlés
-                                </Button>
+                                </button>
+                                </div>
                             </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
+            </div>
         </div>
     );
 }

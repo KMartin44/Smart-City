@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Statement;
 
 class StatementSeeder extends Seeder
 {
@@ -12,6 +13,6 @@ class StatementSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Statement::factory(10)->create();
     }
 }

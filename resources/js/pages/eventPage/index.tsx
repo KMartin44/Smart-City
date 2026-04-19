@@ -1,6 +1,6 @@
-import CreateEventModal from '@/components/EventComponents/CreateEventModal';
+﻿import CreateEventModal from '@/components/EventComponents/CreateEventModal';
 import { MainLayout } from '@/layouts/mainLayout';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -54,59 +54,81 @@ export default function EventsPage() {
     };
 
     return (
-        <MainLayout>
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-bold">Események</h1>
-
-                    <Button onClick={() => setShowModal(true)}>Esemény hozzáadása</Button>
+        <div className="community-feed-page">
+            <section className="community-feed-hero">
+                <div className="community-feed-hero-inner">
+                    <div className="community-feed-hero-content">
+                        <h1 className="community-feed-hero-title">Események</h1>
+                        <p className="community-feed-hero-copy">
+                            Fedezd fel a város eseményeit egy egységes, áttekinthető felületen.
+                        </p>
+                    </div>
                 </div>
+            </section>
 
-                <CreateEventModal
-                    isOpen={showModal}
-                    onClose={() => setShowModal(false)}
-                    onCreated={fetchEvents}
-                />
+            <section className="community-feed-section">
+                <div className="community-feed-section-inner">
+                    <div className="community-feed-toolbar">
+                        <div>
+                            <h2 className="community-feed-toolbar-title">Közelgő események</h2>
+                            <p className="community-feed-toolbar-copy">
+                                Kategóriák, leírások, időpontok és helyszínek egy helyen.
+                            </p>
+                        </div>
+                        <Button variant="outline" className="community-feed-primary-button" onClick={() => setShowModal(true)}>
+                            Esemény hozzáadása
+                        </Button>
+                    </div>
 
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {events.map((event) => (
-                        <Card key={event.id}>
-                            <CardHeader>
-                                <div className="flex items-center justify-between">
-                                    <CardTitle>{event.title}</CardTitle>
-                                    {canDeleteEvent(event) && (
-                                        <Button
-                                            variant="destructive"
-                                            size="sm"
-                                            onClick={() => {}}
-                                        >
-                                            Törlés
-                                        </Button>
-                                    )}
-                                </div>
-                            </CardHeader>
+                    <CreateEventModal
+                        isOpen={showModal}
+                        onClose={() => setShowModal(false)}
+                        onCreated={fetchEvents}
+                    />
 
-                            <CardContent className="space-y-2">
-                                <div className="text-sm text-muted-foreground">
-                                    {categoryLabels[event.category] || event.category}
-                                </div>
+                    <div className="community-feed-grid">
+                        {events.map((event) => (
+                            <Card key={event.id} className="community-feed-card">
+                                <CardHeader className="community-feed-card-header">
+                                    <div className="community-feed-card-title-row">
+                                        <CardTitle className="community-feed-card-title">{event.title}</CardTitle>
+                                        {canDeleteEvent(event) && (
+                                            <Button
+                                                variant="destructive"
+                                                size="sm"
+                                                onClick={() => {}}
+                                                className="community-feed-card-delete-button"
+                                            >
+                                                Törlés
+                                            </Button>
+                                        )}
+                                    </div>
+                                </CardHeader>
 
-                                <p>{event.description}</p>
+                                <CardContent className="community-feed-card-content">
+                                    <div className="community-feed-card-badge">
+                                        {categoryLabels[event.category] || event.category}
+                                    </div>
 
-                                <div className="text-sm">
-                                    <strong>Koordináták:</strong> {Number(event.latitude).toFixed(4)}° N,{' '}
-                                    {Number(event.longitude).toFixed(4)}° E
-                                </div>
+                                    <p className="community-feed-card-description">{event.description}</p>
 
-                                <div className="text-sm">
-                                    {new Date(event.start_time).toLocaleString()} -{' '}
-                                    {new Date(event.end_time).toLocaleString()}
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
+                                    <div className="community-feed-card-detail">
+                                        Koordináták: {Number(event.latitude).toFixed(4)}° N, {Number(event.longitude).toFixed(4)}° E
+                                    </div>
+
+                                    <div className="community-feed-card-detail">
+                                        {new Date(event.start_time).toLocaleString()} - {new Date(event.end_time).toLocaleString()}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
                 </div>
-            </div>
-        </MainLayout>
+            </section>
+        </div>
     );
 }
+
+EventsPage.layout = (page: ReactNode) => (
+    <MainLayout>{page}</MainLayout>
+);

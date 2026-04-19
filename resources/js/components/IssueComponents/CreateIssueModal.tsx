@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+﻿import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -86,21 +86,19 @@ export default function CreateIssueModal({ isOpen, onClose, onCreated }: Props) 
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-lg">
-                <DialogHeader>
-                    <DialogTitle>Probléma bejelentése</DialogTitle>
+            <DialogContent className="community-modal-content">
+                <DialogHeader className="community-modal-header">
+                    <DialogTitle className="community-modal-title">Probléma bejelentése</DialogTitle>
                 </DialogHeader>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* Cím */}
-                    <div className="space-y-2">
-                        <Label>Cím</Label>
-                        <Input name="title" value={data.title} onChange={handleChange} required />
+                <form onSubmit={handleSubmit} className="community-modal-form">
+                    <div className="community-modal-field">
+                        <Label className="community-modal-label">Cím</Label>
+                        <Input className="community-modal-input" name="title" value={data.title} onChange={handleChange} required />
                     </div>
 
-                    {/* Kategória */}
-                    <div className="space-y-2">
-                        <Label>Kategória</Label>
+                    <div className="community-modal-field">
+                        <Label className="community-modal-label">Kategória</Label>
                         <Select
                             onValueChange={(value) =>
                                 setData((prev) => ({
@@ -109,53 +107,51 @@ export default function CreateIssueModal({ isOpen, onClose, onCreated }: Props) 
                                 }))
                             }
                         >
-                            <SelectTrigger>
-                                <SelectValue placeholder="Válassz kategóriát" />
+                            <SelectTrigger className="community-modal-input community-modal-select-trigger">
+                                <SelectValue className="community-modal-select-value" placeholder="Válassz kategóriát" />
                             </SelectTrigger>
 
-                            <SelectContent>
-                                <SelectItem value="kozterulet">Közterület és infrastruktúra</SelectItem>
-                                <SelectItem value="kornyezet">Zöldterület és környezetvédelem</SelectItem>
-                                <SelectItem value="koztisztasag">Köztisztaság</SelectItem>
-                                <SelectItem value="kozlekedes">Közlekedés és forgalom</SelectItem>
-                                <SelectItem value="zaj">Zaj rend és együttélés</SelectItem>
-                                <SelectItem value="kozmuvek">Közművek</SelectItem>
-                                <SelectItem value="allat">Állatokkal kapcsolatos ügyek</SelectItem>
-                                <SelectItem value="intezmenyek">Intézmények és szolgáltatások</SelectItem>
-                                <SelectItem value="digitalis">Digitális / ügyintézési problémák</SelectItem>
-                                <SelectItem value="egyeb">Egyéb</SelectItem>
+                            <SelectContent className="community-modal-select-content">
+                                <SelectItem className="community-modal-select-item" value="kozterulet">Közterület és infrastruktúra</SelectItem>
+                                <SelectItem className="community-modal-select-item" value="kornyezet">Zöldterület és környezetvédelem</SelectItem>
+                                <SelectItem className="community-modal-select-item" value="koztisztasag">Köztisztaság</SelectItem>
+                                <SelectItem className="community-modal-select-item" value="kozlekedes">Közlekedés és forgalom</SelectItem>
+                                <SelectItem className="community-modal-select-item" value="zaj">Zaj rend és együttélés</SelectItem>
+                                <SelectItem className="community-modal-select-item" value="kozmuvek">Közművek</SelectItem>
+                                <SelectItem className="community-modal-select-item" value="allat">Állatokkal kapcsolatos ügyek</SelectItem>
+                                <SelectItem className="community-modal-select-item" value="intezmenyek">Intézmények és szolgáltatások</SelectItem>
+                                <SelectItem className="community-modal-select-item" value="digitalis">Digitális / ügyintézési problémák</SelectItem>
+                                <SelectItem className="community-modal-select-item" value="egyeb">Egyéb</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
 
-                    {/* Térkép */}
-                    <div className="space-y-2">
-                        <Label>Hely kiválasztása</Label>
+                    <div className="community-modal-field">
+                        <Label className="community-modal-label">Hely kiválasztása</Label>
                         <MapContainer
+                            className="community-modal-map"
                             center={data.latitude && data.longitude ? [parseFloat(data.latitude), parseFloat(data.longitude)] : [47.4979, 19.0402]}
                             zoom={13}
-                            style={{ height: '200px', width: '100%' }}
                         >
                             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                             <LocationPicker />
                         </MapContainer>
 
-                        <div className="text-sm text-muted-foreground">
+                        <div className="community-modal-helper-text">
                             Kiválasztott koordináták: {data.latitude || '-'} , {data.longitude || '-'}
                         </div>
                     </div>
 
-                    {/* Leírás */}
-                    <div className="space-y-2">
-                        <Label>Leírás</Label>
-                        <Textarea name="description" value={data.description} onChange={handleChange} required />
+                    <div className="community-modal-field">
+                        <Label className="community-modal-label">Leírás</Label>
+                        <Textarea className="community-modal-textarea" name="description" value={data.description} onChange={handleChange} required />
                     </div>
 
-                    <DialogFooter>
-                        <Button type="button" variant="secondary" onClick={onClose}>
+                    <DialogFooter className="community-modal-footer">
+                        <Button type="button" variant="outline" onClick={onClose} className="community-modal-secondary-button">
                             Mégse
                         </Button>
-                        <Button type="submit">Mentés</Button>
+                        <Button type="submit" variant="outline" className="community-modal-primary-button">Mentés</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

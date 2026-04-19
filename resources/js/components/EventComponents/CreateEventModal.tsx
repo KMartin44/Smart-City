@@ -1,4 +1,4 @@
-import { usePage } from '@inertiajs/react';
+﻿import { usePage } from '@inertiajs/react';
 import React, { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -16,8 +16,16 @@ type Props = {
     onCreated: () => void;
 };
 
+type EventModalPageProps = {
+    auth?: {
+        user?: {
+            id?: number;
+        } | null;
+    };
+};
+
 export default function CreateEventModal({ isOpen, onClose, onCreated }: Props) {
-    const { auth } = usePage().props as any;
+    const { auth } = usePage<EventModalPageProps>().props;
     const userId = auth?.user?.id;
 
     const [data, setData] = useState({
@@ -87,19 +95,19 @@ export default function CreateEventModal({ isOpen, onClose, onCreated }: Props) 
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-lg">
-                <DialogHeader>
-                    <DialogTitle>Esemény hozzáadása</DialogTitle>
+            <DialogContent className="community-modal-content">
+                <DialogHeader className="community-modal-header">
+                    <DialogTitle className="community-modal-title">Esemény hozzáadása</DialogTitle>
                 </DialogHeader>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="space-y-2">
-                        <Label>Cím</Label>
-                        <Input name="title" value={data.title} onChange={handleChange} required />
+                <form onSubmit={handleSubmit} className="community-modal-form">
+                    <div className="community-modal-field">
+                        <Label className="community-modal-label">Cím</Label>
+                        <Input className="community-modal-input" name="title" value={data.title} onChange={handleChange} required />
                     </div>
 
-                    <div className="space-y-2">
-                        <Label>Kategória</Label>
+                    <div className="community-modal-field">
+                        <Label className="community-modal-label">Kategória</Label>
                         <Select
                             value={data.category || ''}
                             onValueChange={(value) => {
@@ -109,59 +117,59 @@ export default function CreateEventModal({ isOpen, onClose, onCreated }: Props) 
                                 }));
                             }}
                         >
-                            <SelectTrigger>
-                                <SelectValue placeholder="Válassz kategóriát" />
+                            <SelectTrigger className="community-modal-input community-modal-select-trigger">
+                                <SelectValue className="community-modal-select-value" placeholder="Válassz kategóriát" />
                             </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="kultura">Kulturális</SelectItem>
-                                <SelectItem value="kozossegi">Közösségi</SelectItem>
-                                <SelectItem value="oktatas">Oktatás</SelectItem>
-                                <SelectItem value="sport">Sport</SelectItem>
-                                <SelectItem value="csaladi">Családi</SelectItem>
-                                <SelectItem value="kreativ">Kreatív</SelectItem>
-                                <SelectItem value="vallasi">Vallási</SelectItem>
-                                <SelectItem value="onkormanyzati">Önkormányzati</SelectItem>
-                                <SelectItem value="egyeb">Egyéb</SelectItem>
+                            <SelectContent className="community-modal-select-content">
+                                <SelectItem className="community-modal-select-item" value="kultura">Kulturális</SelectItem>
+                                <SelectItem className="community-modal-select-item" value="kozossegi">Közösségi</SelectItem>
+                                <SelectItem className="community-modal-select-item" value="oktatas">Oktatás</SelectItem>
+                                <SelectItem className="community-modal-select-item" value="sport">Sport</SelectItem>
+                                <SelectItem className="community-modal-select-item" value="csaladi">Családi</SelectItem>
+                                <SelectItem className="community-modal-select-item" value="kreativ">Kreatív</SelectItem>
+                                <SelectItem className="community-modal-select-item" value="vallasi">Vallási</SelectItem>
+                                <SelectItem className="community-modal-select-item" value="onkormanyzati">Önkormányzati</SelectItem>
+                                <SelectItem className="community-modal-select-item" value="egyeb">Egyéb</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
 
-                    <div className="space-y-2">
-                        <Label>Hely kiválasztása</Label>
+                    <div className="community-modal-field">
+                        <Label className="community-modal-label">Hely kiválasztása</Label>
                         <MapContainer
+                            className="community-modal-map"
                             center={data.latitude && data.longitude ? [parseFloat(data.latitude), parseFloat(data.longitude)] : [47.4979, 19.0402]}
                             zoom={13}
-                            style={{ height: '200px', width: '100%' }}
                         >
                             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                             <LocationPicker />
                         </MapContainer>
-                        <div className="text-sm text-muted-foreground">
+                        <div className="community-modal-helper-text">
                             Kiválasztott koordináták: {data.latitude || '-'} , {data.longitude || '-'}
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                            <Label>Kezdés</Label>
-                            <Input type="datetime-local" name="start_time" value={data.start_time} onChange={handleChange} required />
+                    <div className="community-modal-split-grid">
+                        <div className="community-modal-field">
+                            <Label className="community-modal-label">Kezdés</Label>
+                            <Input className="community-modal-input" type="datetime-local" name="start_time" value={data.start_time} onChange={handleChange} required />
                         </div>
-                        <div className="space-y-2">
-                            <Label>Befejezés</Label>
-                            <Input type="datetime-local" name="end_time" value={data.end_time} onChange={handleChange} required />
+                        <div className="community-modal-field">
+                            <Label className="community-modal-label">Befejezés</Label>
+                            <Input className="community-modal-input" type="datetime-local" name="end_time" value={data.end_time} onChange={handleChange} required />
                         </div>
                     </div>
 
-                    <div className="space-y-2">
-                        <Label>Leírás</Label>
-                        <Textarea name="description" value={data.description} onChange={handleChange} required />
+                    <div className="community-modal-field">
+                        <Label className="community-modal-label">Leírás</Label>
+                        <Textarea className="community-modal-textarea" name="description" value={data.description} onChange={handleChange} required />
                     </div>
 
-                    <DialogFooter>
-                        <Button type="button" variant="secondary" onClick={onClose}>
+                    <DialogFooter className="community-modal-footer">
+                        <Button type="button" variant="outline" onClick={onClose} className="community-modal-secondary-button">
                             Mégse
                         </Button>
-                        <Button type="submit">Mentés</Button>
+                        <Button type="submit" variant="outline" className="community-modal-primary-button">Mentés</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

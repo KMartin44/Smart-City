@@ -1,8 +1,5 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useForm } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 
 export default function Login() {
     const { data, setData, post, processing, errors } = useForm({
@@ -17,36 +14,69 @@ export default function Login() {
     }
 
     return (
-        <div className="flex min-h-screen items-center justify-center">
-            <Card className="w-[400px]">
-                <CardHeader>
-                    <CardTitle>Login</CardTitle>
-                </CardHeader>
+        <div className="auth-page">
+            {/* Brand panel */}
+            <div className="auth-brand-panel">
+                <div className="auth-brand-logo">
+                    <Link href="/" className="auth-brand-logo-name">Okos Város</Link>
+                </div>
 
-                <CardContent>
-                    <form onSubmit={submit} className="space-y-4">
-                        <div className="space-y-2">
-                            <Label>Email</Label>
+                <div className="auth-brand-headline">
+                    <h1 className="auth-brand-title">Üdvözöljük<br />az Okos Város<br />platformon!</h1>
+                    <p className="auth-brand-subtitle">
+                        Jelentse be a közösségi problémákat, kövesse nyomon az eseményeket, és legyen részese városának fejlődésének.
+                    </p>
+                </div>
 
-                            <Input type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} />
+                <p className="auth-brand-footer">© 2026 Okos Város - Együtt épül a jó város</p>
+            </div>
 
-                            {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
+            {/* Form panel */}
+            <div className="auth-form-panel">
+                <div className="auth-form-wrap">
+                    <div className="auth-mobile-brand">
+                        <Link href="/" className="auth-mobile-brand-name">Okos Város</Link>
+                    </div>
+
+                    <div className="auth-form-header">
+                        <h2 className="auth-form-title">Bejelentkezés</h2>
+                        <p className="auth-form-subtitle">
+                            Nincs még fiókja?{' '}
+                            <Link href="/register">Regisztráljon most</Link>
+                        </p>
+                    </div>
+
+                    <form onSubmit={submit} className="auth-form">
+                        <div className="auth-form-field">
+                            <label className="auth-form-label">Email cím</label>
+                            <input
+                                className="auth-form-input"
+                                type="email"
+                                value={data.email}
+                                onChange={(e) => setData('email', e.target.value)}
+                                placeholder="pelda@email.hu"
+                            />
+                            {errors.email && <p className="auth-form-error">{errors.email}</p>}
                         </div>
 
-                        <div className="space-y-2">
-                            <Label>Password</Label>
-
-                            <Input type="password" value={data.password} onChange={(e) => setData('password', e.target.value)} />
-
-                            {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
+                        <div className="auth-form-field">
+                            <label className="auth-form-label">Jelszó</label>
+                            <input
+                                className="auth-form-input"
+                                type="password"
+                                value={data.password}
+                                onChange={(e) => setData('password', e.target.value)}
+                                placeholder="••••••••"
+                            />
+                            {errors.password && <p className="auth-form-error">{errors.password}</p>}
                         </div>
 
-                        <Button className="w-full" type='submit' disabled={processing}>
-                            Login
-                        </Button>
+                        <button type="submit" disabled={processing} className="auth-submit-btn">
+                            {processing ? 'Bejelentkezés...' : 'Bejelentkezés'}
+                        </button>
                     </form>
-                </CardContent>
-            </Card>
+                </div>
+            </div>
         </div>
     );
 }

@@ -2,65 +2,44 @@
 
 namespace App\Policies;
 
-use Illuminate\Auth\Access\Response;
 use App\Models\Statement;
 use App\Models\User;
 
 class StatementPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    public function viewAny(?User $user): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Statement $statement): bool
+    public function view(?User $user, Statement $statement): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
     public function create(User $user): bool
     {
-        return false;
+        return in_array($user->type, ['admin', 'onkormanyzati']);
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
     public function update(User $user, Statement $statement): bool
     {
-        return false;
+        return in_array($user->type, ['admin', 'onkormanyzati']);
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
     public function delete(User $user, Statement $statement): bool
     {
-        return false;
+        return in_array($user->type, ['admin', 'onkormanyzati']);
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
     public function restore(User $user, Statement $statement): bool
     {
-        return false;
+        return $user->type === 'admin';
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
     public function forceDelete(User $user, Statement $statement): bool
     {
-        return false;
+        return $user->type === 'admin';
     }
 }
+

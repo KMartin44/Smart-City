@@ -8,6 +8,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Event;
 use App\Models\Issue;
 use App\Models\Statement;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
