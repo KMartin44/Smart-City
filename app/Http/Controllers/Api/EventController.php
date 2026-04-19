@@ -3,14 +3,28 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Event;
+use App\Services\ReverseGeocodingService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
+    public function __construct(private ReverseGeocodingService $reverseGeocoding)
+    {
+    }
+
     public function index()
     {
-        return response()->json(Event::latest()->get(), 200);
+        $events = Event::latest()->get()->map(function (Event $event) {
+            $address = $this->reverseGeocoding->resolve((float) $event->latitude, (float) $event->longitude);
+
+            return [
+                ...$event->toArray(),
+                'address' => $address,
+            ];
+        });
+
+        return response()->json($events, 200);
     }
 
     public function store(Request $request)
@@ -37,7 +51,12 @@ class EventController extends Controller
 
     public function show(Event $event)
     {
-        return response()->json(['data' => $event], 200);
+        $data = [
+            ...$event->toArray(),
+            'address' => $this->reverseGeocoding->resolve((float) $event->latitude, (float) $event->longitude),
+        ];
+
+        return response()->json(['data' => $data], 200);
     }
 
     public function update(Request $request, Event $event)

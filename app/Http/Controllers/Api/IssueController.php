@@ -3,17 +3,31 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Issue;
+use App\Services\ReverseGeocodingService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class IssueController extends Controller
 {
+    public function __construct(private ReverseGeocodingService $reverseGeocoding)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return response()->json(Issue::latest()->get(), 200);
+        $issues = Issue::latest()->get()->map(function (Issue $issue) {
+            $address = $this->reverseGeocoding->resolve((float) $issue->latitude, (float) $issue->longitude);
+
+            return [
+                ...$issue->toArray(),
+                'address' => $address,
+            ];
+        });
+
+        return response()->json($issues, 200);
     }
 
     /**
@@ -45,7 +59,12 @@ class IssueController extends Controller
      */
     public function show(Issue $issue)
     {
-        return response()->json(['data' => $issue], 200);
+        $data = [
+            ...$issue->toArray(),
+            'address' => $this->reverseGeocoding->resolve((float) $issue->latitude, (float) $issue->longitude),
+        ];
+
+        return response()->json(['data' => $data], 200);
     }
 
     /**

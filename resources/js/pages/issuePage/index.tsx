@@ -1,4 +1,4 @@
-﻿import CreateIssueModal from '@/components/IssueComponents/CreateIssueModal';
+import CreateIssueModal from '@/components/IssueComponents/CreateIssueModal';
 import { MainLayout } from '@/layouts/mainLayout';
 import { ReactNode, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -12,6 +12,7 @@ type Issue = {
     description: string;
     latitude: number;
     longitude: number;
+    address?: string | null;
     is_done: boolean;
     user_id: number;
 };
@@ -152,9 +153,9 @@ export default function IssuesPage() {
                                     </div>
                                     <p className="community-feed-card-description">{issue.description}</p>
                                     <div className="community-feed-card-detail">
-                                        Koordináták: {issue.latitude.toFixed(6)}, {issue.longitude.toFixed(6)}
+                                        Helyszín: {issue.address || `${issue.latitude.toFixed(6)}, ${issue.longitude.toFixed(6)}`}
                                     </div>
-                                    {(user?.type === 'admin' || user?.type === 'onkormanyzati') && (
+                                    {(user?.type === 'admin' || user?.type === 'onkormanyzat') && (
                                         <Button
                                             variant="outline"
                                             size="sm"

@@ -7,6 +7,11 @@ use App\Models\User;
 
 class StatementPolicy
 {
+    private function isMunicipal(User $user): bool
+    {
+        return in_array($user->type, ['admin', 'onkormanyzat'], true);
+    }
+
     public function viewAny(?User $user): bool
     {
         return true;
@@ -19,17 +24,17 @@ class StatementPolicy
 
     public function create(User $user): bool
     {
-        return in_array($user->type, ['admin', 'onkormanyzati']);
+        return $this->isMunicipal($user);
     }
 
     public function update(User $user, Statement $statement): bool
     {
-        return in_array($user->type, ['admin', 'onkormanyzati']);
+        return $this->isMunicipal($user);
     }
 
     public function delete(User $user, Statement $statement): bool
     {
-        return in_array($user->type, ['admin', 'onkormanyzati']);
+        return $this->isMunicipal($user);
     }
 
     public function restore(User $user, Statement $statement): bool

@@ -37,7 +37,7 @@ class IssuePolicy
      */
     public function update(User $user, Issue $issue): bool
     {
-        return in_array($user->type, ['admin', 'onkormanyzati']);
+        return in_array($user->type, ['admin', 'onkormanyzat'], true);
     }
 
     /**

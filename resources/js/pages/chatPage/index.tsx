@@ -1,6 +1,6 @@
+import { useState, useEffect, useRef, FormEvent } from 'react';
 import { MainLayout } from '@/layouts/mainLayout';
 import { Trash2 } from 'lucide-react';
-import { FormEvent, useEffect, useRef, useState } from 'react';
 
 function getCookie(name: string): string {
     const match = document.cookie.match(new RegExp('(^|;\\s*)' + name + '=([^;]*)'));
@@ -46,7 +46,10 @@ type Props = {
 function formatTime(dateStr: string) {
     const d = new Date(dateStr);
     const now = new Date();
-    const isToday = d.getDate() === now.getDate() && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    const isToday =
+        d.getDate() === now.getDate() &&
+        d.getMonth() === now.getMonth() &&
+        d.getFullYear() === now.getFullYear();
 
     if (isToday) {
         return d.toLocaleTimeString('hu-HU', { hour: '2-digit', minute: '2-digit' });
@@ -131,7 +134,8 @@ export default function ChatPage({ user }: Props) {
         }
     };
 
-    const canDelete = (msg: ChatMessage) => user.type === 'admin' || msg.user_id === user.id;
+    const canDelete = (msg: ChatMessage) =>
+        user.type === 'admin' || msg.user_id === user.id;
 
     return (
         <div className="chat-page">
@@ -148,18 +152,27 @@ export default function ChatPage({ user }: Props) {
                 <div className="chat-box">
                     <div className="chat-messages">
                         {messages.length === 0 ? (
-                            <div className="chat-messages-empty">Még nincsenek üzenetek. Légy az első!</div>
+                            <div className="chat-messages-empty">
+                                Még nincsenek üzenetek. Légy az első!
+                            </div>
                         ) : (
                             messages.map((msg) => {
                                 const isOwn = msg.user_id === user.id;
                                 return (
-                                    <div key={msg.id} className={`chat-message-wrapper${isOwn ? 'chat-message-wrapper--own' : ''}`}>
+                                    <div
+                                        key={msg.id}
+                                        className={`chat-message-wrapper${isOwn ? ' chat-message-wrapper--own' : ''}`}
+                                    >
                                         {!isOwn && (
                                             <span className="chat-message-sender">
                                                 {msg.user.first_name} {msg.user.last_name}
                                             </span>
                                         )}
-                                        <div className={`chat-message-bubble${isOwn ? 'chat-message-bubble--own' : ''}`}>{msg.message}</div>
+                                        <div
+                                            className={`chat-message-bubble${isOwn ? ' chat-message-bubble--own' : ''}`}
+                                        >
+                                            {msg.message}
+                                        </div>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                                             <span className="chat-message-time">{formatTime(msg.created_at)}</span>
                                             {canDelete(msg) && (
@@ -192,7 +205,11 @@ export default function ChatPage({ user }: Props) {
                             onKeyDown={handleKeyDown}
                             maxLength={1000}
                         />
-                        <button type="submit" className="chat-send-button" disabled={sending || !text.trim()}>
+                        <button
+                            type="submit"
+                            className="chat-send-button"
+                            disabled={sending || !text.trim()}
+                        >
                             Küldés
                         </button>
                     </form>

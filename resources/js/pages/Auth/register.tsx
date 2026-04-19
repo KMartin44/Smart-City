@@ -22,23 +22,21 @@ export default function Register() {
 
     return (
         <div className="auth-page">
-            {/* Brand panel */}
             <div className="auth-brand-panel">
                 <div className="auth-brand-logo">
                     <Link href="/" className="auth-brand-logo-name">SmartCity</Link>
                 </div>
 
                 <div className="auth-brand-headline">
-                    <h1 className="auth-brand-title">Csatlakozzon<br />az SmartCity<br />közösséghez!</h1>
+                    <h1 className="auth-brand-title">Csatlakozz<br />a SmartCity<br />közösséghez!</h1>
                     <p className="auth-brand-subtitle">
-                        Regisztráljon és vegyen részt aktívan városa életében — jelezzen problémákat, kövesse az eseményeket.
+                        Regisztrálj és vegyél részt aktívan a városod életében, jelezd a problémákat, kövesd az eseményeket.
                     </p>
                 </div>
 
                 <p className="auth-brand-footer">© 2026 SmartCity - Együtt épül a jó város</p>
             </div>
 
-            {/* Form panel */}
             <div className="auth-form-panel">
                 <div className="auth-form-wrap">
                     <div className="auth-mobile-brand">

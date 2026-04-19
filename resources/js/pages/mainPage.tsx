@@ -113,7 +113,7 @@ function MainPage({
                     <div className="main-stats-grid">
                         <div>
                             <div className="main-stat-number text-green-600">{stats.resolvedProblems.toLocaleString()}+</div>
-                            <p className="main-stat-copy">Megoldott probléma</p>
+                            <p className="main-stat-copy">Bejelentett probléma</p>
                         </div>
                         <div>
                             <div className="main-stat-number text-orange-600">{stats.organizedEvents.toLocaleString()}+</div>

@@ -13,7 +13,7 @@ use App\Models\User;
 Route::get('/', function () {
     return Inertia::render('mainPage', [
         'stats' => [
-            'resolvedProblems' => Statement::count(),
+            'resolvedProblems' => Issue::count(),
             'organizedEvents' => Event::count(),
             'activeParticipants' => User::count(),
         ],

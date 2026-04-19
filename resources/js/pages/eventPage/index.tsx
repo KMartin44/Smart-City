@@ -1,4 +1,4 @@
-﻿import CreateEventModal from '@/components/EventComponents/CreateEventModal';
+import CreateEventModal from '@/components/EventComponents/CreateEventModal';
 import { MainLayout } from '@/layouts/mainLayout';
 import { ReactNode, useEffect, useState } from 'react';
 
@@ -13,6 +13,7 @@ type Event = {
     description: string;
     latitude: number;
     longitude: number;
+    address?: string | null;
     start_time: string;
     end_time: string;
     user_id: number;
@@ -131,7 +132,7 @@ export default function EventsPage() {
                                     <p className="community-feed-card-description">{event.description}</p>
 
                                     <div className="community-feed-card-detail">
-                                        Koordináták: {Number(event.latitude).toFixed(4)}° N, {Number(event.longitude).toFixed(4)}° E
+                                        Helyszín: {event.address || `${Number(event.latitude).toFixed(4)}° N, ${Number(event.longitude).toFixed(4)}° E`}
                                     </div>
 
                                     <div className="community-feed-card-detail">

@@ -21,9 +21,9 @@ export default function Login() {
                 </div>
 
                 <div className="auth-brand-headline">
-                    <h1 className="auth-brand-title">Üdvözöljük<br />az SmartCity<br />platformon!</h1>
+                    <h1 className="auth-brand-title">Üdvözlünk<br />a SmartCity<br />platformon!</h1>
                     <p className="auth-brand-subtitle">
-                        Jelentse be a közösségi problémákat, kövesse nyomon az eseményeket, és legyen részese városának fejlődésének.
+                        Jelentsd be a közösségi problémákat, kövesd nyomon az eseményeket, és vegyél részt a városod fejlődésében.
                     </p>
                 </div>
 

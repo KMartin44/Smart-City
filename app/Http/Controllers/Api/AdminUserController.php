@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Event;
+use App\Models\Issue;
+use App\Models\Statement;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -56,6 +59,10 @@ class AdminUserController extends Controller
                 'message' => 'A saját fiókodat nem törölheted innen.',
             ], 422);
         }
+
+        Issue::withTrashed()->where('user_id', $user->id)->forceDelete();
+        Event::withTrashed()->where('user_id', $user->id)->forceDelete();
+        Statement::withTrashed()->where('user_id', $user->id)->forceDelete();
 
         $user->delete();
 

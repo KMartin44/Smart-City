@@ -151,7 +151,7 @@ class DatabaseSeeder extends Seeder
                 'category' => 'egyeb',
                 'title' => 'Bolhapiac a belvárosban',
                 'latitude' => 47.4984,
-                'longitude' => 19.0408,
+                'longitude' => 19.0400,
                 'description' => 'Használt tárgyak vására.',
                 'start_time' => '2026-06-05 08:00:00',
                 'end_time' => '2026-06-05 14:00:00',
@@ -182,7 +182,6 @@ class DatabaseSeeder extends Seeder
             ['category' => 'kozmuvek', 'title' => 'Vízszivárgás', 'latitude' => 47.4950, 'longitude' => 19.0450, 'description' => 'Csőtörés gyanú.', 'is_done' => false, 'user_id' => 1, 'created_at' => now(), 'updated_at' => now()],
             ['category' => 'allat', 'title' => 'Kóbor kutya', 'latitude' => 47.5050, 'longitude' => 19.0550, 'description' => 'Gazdátlan állat.', 'is_done' => true, 'user_id' => 1, 'created_at' => now(), 'updated_at' => now()],
             ['category' => 'intezmenyek', 'title' => 'Zárva az ügyfélszolgálat', 'latitude' => 47.4980, 'longitude' => 19.0420, 'description' => 'Munkaidőben is zárva.', 'is_done' => false, 'user_id' => 3, 'created_at' => now(), 'updated_at' => now()],
-            ['category' => 'digitalis', 'title' => 'Hibás weboldal', 'latitude' => 47.4990, 'longitude' => 19.0430, 'description' => 'Nem működik az oldal.', 'is_done' => true, 'user_id' => 3, 'created_at' => now(), 'updated_at' => now()],
             ['category' => 'egyeb', 'title' => 'Ismeretlen probléma', 'latitude' => 47.4960, 'longitude' => 19.0410, 'description' => 'Egyéb bejelentés.', 'is_done' => true, 'user_id' => 3, 'created_at' => now(), 'updated_at' => now()],
         ]);
 

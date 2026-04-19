@@ -73,8 +73,8 @@ export default function Edit({ type, id }: EditProps) {
     };
 
     const doneOptions = [
-        { value: '1', label: 'KĂ©sz van' },
-        { value: '0', label: 'Nincs kĂ©sz' },
+        { value: '1', label: 'Kész van' },
+        { value: '0', label: 'Nincs kész' },
     ];
 
     const eventCategories = [
