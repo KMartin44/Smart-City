@@ -25,25 +25,17 @@ export default function StatementsTable({ statements, canManage }: TableProps) {
     };
 
     return (
-        <Table>
-            <TableHeader>
-                <TableRow>
-                    <TableHead>ID</TableHead>
-                    <TableHead>Cím</TableHead>
-                    <TableHead>Műveletek</TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
+        <>
+            <div className="statements-mobile-list">
                 {statements.map((statement) => (
-                    <TableRow key={statement.id}>
-                        <TableCell>{statement.id}</TableCell>
-                        <TableCell>{statement.title}</TableCell>
-                        <TableCell>
+                    <article key={statement.id} className="statements-mobile-card">
+                        <h3 className="statements-mobile-card-title">{statement.title}</h3>
+                        <div className="statements-mobile-actions">
                             <Button
                                 variant="outline"
                                 size="sm"
                                 onClick={() => router.get(`/statements/show/${statement.id}`)}
-                                className="mr-2"
+                                className="statements-mobile-action-button"
                             >
                                 Részletek
                             </Button>
@@ -53,7 +45,7 @@ export default function StatementsTable({ statements, canManage }: TableProps) {
                                         variant="outline"
                                         size="sm"
                                         onClick={() => router.get(`/statements/edit/${statement.id}`)}
-                                        className="mr-2"
+                                        className="statements-mobile-action-button"
                                     >
                                         Módosítás
                                     </Button>
@@ -61,15 +53,64 @@ export default function StatementsTable({ statements, canManage }: TableProps) {
                                         variant="destructive"
                                         size="sm"
                                         onClick={() => deleteStatement(statement.id)}
+                                        className="statements-mobile-action-button"
                                     >
                                         Törlés
                                     </Button>
                                 </>
                             )}
-                        </TableCell>
-                    </TableRow>
+                        </div>
+                    </article>
                 ))}
-            </TableBody>
-        </Table>
+            </div>
+
+            <Table className="statements-table">
+                <TableHeader className="statements-table-header">
+                    <TableRow className="statements-table-header-row">
+                        <TableHead className="statements-table-head">Cím</TableHead>
+                        <TableHead className="statements-table-head">Műveletek</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody className="statements-table-body">
+                    {statements.map((statement) => (
+                        <TableRow key={statement.id} className="statements-table-row">
+                            <TableCell className="statements-table-cell statements-table-cell-title">{statement.title}</TableCell>
+                            <TableCell className="statements-table-actions-cell">
+                                <div className="statements-table-actions">
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => router.get(`/statements/show/${statement.id}`)}
+                                        className="statements-table-action-button"
+                                    >
+                                        Részletek
+                                    </Button>
+                                    {canManage && (
+                                        <>
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => router.get(`/statements/edit/${statement.id}`)}
+                                                className="statements-table-action-button"
+                                            >
+                                                Módosítás
+                                            </Button>
+                                            <Button
+                                                variant="destructive"
+                                                size="sm"
+                                                onClick={() => deleteStatement(statement.id)}
+                                                className="statements-table-action-button"
+                                            >
+                                                Törlés
+                                            </Button>
+                                        </>
+                                    )}
+                                </div>
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </>
     );
 }

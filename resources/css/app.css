@@ -1,8 +1,19 @@
-@import 'tailwindcss';
+﻿@import 'tailwindcss';
 @import "tw-animate-css";
 @import "leaflet/dist/leaflet.css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
+@import "./styles/navigation.css";
+@import "./styles/main-page.css";
+@import "./styles/statements-list.css";
+@import "./styles/statements-details.css";
+@import "./styles/community-feed.css";
+@import "./styles/community-modals.css";
+@import "./styles/auth.css";
+@import "./styles/map.css";
+@import "./styles/shared-buttons.css";
+@import "./styles/admin.css";
+@import "./styles/chat.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -128,7 +139,30 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    scrollbar-width: auto;
+    scrollbar-color: #2563eb #e5e7eb;
     }
+
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #e5e7eb;
+    border-radius: 9999px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: #2563eb;
+    border-radius: 9999px;
+    border: 2px solid #e5e7eb;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: #1d4ed8;
+  }
+
   body {
     @apply bg-background text-foreground;
     }
@@ -136,3 +170,4 @@
     @apply font-sans;
     }
 }
+

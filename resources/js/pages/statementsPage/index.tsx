@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import StatementsTable from '@/components/StatementsComponents/StatementsTable';
 import { useEffect, useState } from 'react';
+import { MainLayout } from '@/layouts/mainLayout';
+import { ReactNode } from 'react';
 
 type Statement = {
     id: number;
@@ -30,15 +32,34 @@ export default function Index({ userType }: IndexProps) {
     }, []);
 
     return (
-        <div className="container mx-auto p-4">
-            <Card>
-                <CardHeader>
-                    <CardTitle>Közlemények</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <StatementsTable statements={statements} canManage={canManage} />
-                </CardContent>
-            </Card>
+        <div className="statements-page">
+            <section className="statements-hero">
+                <div className="statements-hero-inner">
+                    <div className="statements-hero-content">
+                        <h1 className="statements-hero-title">Közlemények</h1>
+                        <p className="statements-hero-copy">
+                            Kövesd a város legfrissebb bejelentéseit egy letisztult, gyorsan áttekinthető listában.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section className="statements-section">
+                <div className="statements-section-inner">
+                    <Card className="statements-card">
+                        <CardHeader>
+                            <CardTitle className="statements-card-title">Összes közlemény</CardTitle>
+                        </CardHeader>
+                        <CardContent className="statements-card-content">
+                            <StatementsTable statements={statements} canManage={canManage} />
+                        </CardContent>
+                    </Card>
+                </div>
+            </section>
         </div>
     );
 }
+
+Index.layout = (page: ReactNode) => (
+    <MainLayout>{page}</MainLayout>
+);

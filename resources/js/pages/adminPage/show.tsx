@@ -1,6 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import { MainLayout } from '@/layouts/mainLayout';
+import { router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 
 type Type = 'event' | 'issue' | 'statement';
@@ -24,108 +23,128 @@ type Item = {
     updated_at: string;
 };
 
+const typeLabel = (type: Type) => {
+    if (type === 'event') return 'Esemény';
+    if (type === 'issue') return 'Problémabejelentés';
+    return 'Közlemény';
+};
+
 export default function Show({ type, id }: ShowProps) {
     const [item, setItem] = useState<Item | null>(null);
 
     useEffect(() => {
         let url = '';
+        if (type === 'event') url = `/api/events/${id}`;
+        else if (type === 'issue') url = `/api/issues/${id}`;
+        else url = `/api/statements/${id}`;
 
-        if (type === 'event') {
-            url = `/api/events/${id}`;
-        } else if (type === 'issue') {
-            url = `/api/issues/${id}`;
-        } else {
-            url = `/api/statements/${id}`;
-        }
-
-        fetch(url, {
-            headers: {
-                Accept: 'application/json',
-            },
-        })
+        fetch(url, { headers: { Accept: 'application/json' } })
             .then((res) => res.json())
-            .then((response) => {
-                setItem(response.data);
-            });
+            .then((response) => setItem(response.data));
     }, [type, id]);
 
     if (!item) {
-        return <p>Betöltés...</p>;
+        return (
+            <MainLayout>
+                <div className="admin-page">
+                    <div className="admin-section">
+                        <p className="text-sm text-gray-400">Betöltés...</p>
+                    </div>
+                </div>
+            </MainLayout>
+        );
     }
 
     return (
         <MainLayout>
-            <Card>
-                <CardHeader>
-                    <CardTitle>
-                        {type === 'event' && 'Esemény részletek'}
-                        {type === 'issue' && 'Problémabejelentés részletek'}
-                        {type === 'statement' && 'Közlemény részletek'}
-                    </CardTitle>
-                </CardHeader>
-
-                <CardContent>
-                    <div>
-                        <strong>ID:</strong> {item.id}
-                    </div>
-
-                    <div>
-                        <strong>Cím:</strong> {item.title}
-                    </div>
-
-                    {(type === 'event' || type === 'issue') && (
-                        <div>
-                            <strong>Kategória:</strong> {item.category ?? '-'}
+            <div className="admin-page">
+                <div className="admin-hero">
+                    <div className="admin-hero-inner">
+                        <div className="admin-hero-text">
+                            <h1 className="admin-hero-title">{typeLabel(type)} részletek</h1>
+                            <p className="admin-hero-subtitle">#{item.id} — {item.title}</p>
                         </div>
-                    )}
-
-                    {(type === 'event' || type === 'issue') && (
-                        <>
-                            <div>
-                                <strong>Latitude:</strong> {item.latitude ?? '-'}
-                            </div>
-
-                            <div>
-                                <strong>Longitude:</strong> {item.longitude ?? '-'}
-                            </div>
-                        </>
-                    )}
-
-                    {type === 'issue' && (
-                        <>
-                            <div>
-                                <strong>Kész van már?</strong> {item.is_done == null ? '-' : Number(item.is_done) === 1 ? 'Kész van' : 'Nincs kész'}
-                            </div>
-                        </>
-                    )}
-
-                    {type === 'event' && (
-                        <>
-                            <div>
-                                <strong>Kezdés:</strong> {item.start_time ?? '-'}
-                            </div>
-
-                            <div>
-                                <strong>Befejezés:</strong> {item.end_time ?? '-'}
-                            </div>
-                        </>
-                    )}
-
-                    <Separator />
-
-                    <div>
-                        <strong>Leírás:</strong>
-                        <p>{item.description}</p>
                     </div>
+                </div>
 
-                    <Separator />
+                <div className="admin-section">
+                    <div className="admin-detail-card">
+                        <div className="admin-detail-header">
+                            <span className="admin-detail-title">{item.title}</span>
+                            <button className="admin-detail-back" onClick={() => router.get('/admin')}>
+                                ← Vissza
+                            </button>
+                        </div>
 
-                    <div>
-                        <div>Létrehozva: {item.created_at}</div>
-                        <div>Frissítve: {item.updated_at}</div>
+                        <div className="admin-detail-body">
+                            <div className="admin-detail-row">
+                                <span className="admin-detail-label">ID</span>
+                                <span className="admin-detail-value font-mono text-xs text-gray-400">{item.id}</span>
+                            </div>
+
+                            <div className="admin-detail-row">
+                                <span className="admin-detail-label">Cím</span>
+                                <span className="admin-detail-value">{item.title}</span>
+                            </div>
+
+                            {(type === 'event' || type === 'issue') && (
+                                <div className="admin-detail-row">
+                                    <span className="admin-detail-label">Kategória</span>
+                                    <span className="admin-detail-value">{item.category ?? '-'}</span>
+                                </div>
+                            )}
+
+                            {(type === 'event' || type === 'issue') && (
+                                <div className="admin-detail-row">
+                                    <span className="admin-detail-label">Koordináták</span>
+                                    <span className="admin-detail-value font-mono text-xs">
+                                        {item.latitude ?? '-'}, {item.longitude ?? '-'}
+                                    </span>
+                                </div>
+                            )}
+
+                            {type === 'issue' && (
+                                <div className="admin-detail-row">
+                                    <span className="admin-detail-label">Állapot</span>
+                                    <span className="admin-detail-value">
+                                        {item.is_done == null ? '-' : Number(item.is_done) === 1
+                                            ? <span className="admin-detail-badge-done">Kész van</span>
+                                            : <span className="admin-detail-badge-pending">Nincs kész</span>}
+                                    </span>
+                                </div>
+                            )}
+
+                            {type === 'event' && (
+                                <>
+                                    <div className="admin-detail-row">
+                                        <span className="admin-detail-label">Kezdés</span>
+                                        <span className="admin-detail-value">{item.start_time ?? '-'}</span>
+                                    </div>
+                                    <div className="admin-detail-row">
+                                        <span className="admin-detail-label">Befejezés</span>
+                                        <span className="admin-detail-value">{item.end_time ?? '-'}</span>
+                                    </div>
+                                </>
+                            )}
+
+                            <div className="admin-detail-row">
+                                <span className="admin-detail-label">Leírás</span>
+                                <span className="admin-detail-value whitespace-pre-wrap">{item.description}</span>
+                            </div>
+
+                            <div className="admin-detail-row">
+                                <span className="admin-detail-label">Létrehozva</span>
+                                <span className="admin-detail-value">{item.created_at}</span>
+                            </div>
+
+                            <div className="admin-detail-row">
+                                <span className="admin-detail-label">Frissítve</span>
+                                <span className="admin-detail-value">{item.updated_at}</span>
+                            </div>
+                        </div>
                     </div>
-                </CardContent>
-            </Card>
+                </div>
+            </div>
         </MainLayout>
     );
 }

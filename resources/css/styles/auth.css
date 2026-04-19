@@ -1,0 +1,111 @@
+@layer components {
+
+  .auth-page {
+    @apply min-h-screen flex items-stretch bg-gray-50;
+  }
+
+  .auth-brand-panel {
+    @apply hidden lg:flex lg:w-1/2 flex-col justify-between p-12 bg-gradient-to-br from-blue-600 to-blue-800 text-white;
+  }
+
+  .auth-brand-logo {
+    @apply flex items-center gap-3;
+  }
+
+  .auth-brand-logo-icon {
+    @apply size-10 rounded-xl bg-white/20 flex items-center justify-center text-2xl;
+  }
+
+  .auth-brand-logo-name {
+    @apply text-xl font-bold tracking-tight hover:opacity-80 transition-opacity;
+  }
+
+  .auth-brand-headline {
+    @apply space-y-4;
+  }
+
+  .auth-brand-title {
+    @apply text-4xl font-extrabold leading-tight;
+  }
+
+  .auth-brand-subtitle {
+    @apply text-blue-100 text-lg leading-relaxed;
+  }
+
+  .auth-brand-footer {
+    @apply text-blue-200 text-sm;
+  }
+
+  .auth-form-panel {
+    @apply flex flex-1 flex-col items-center justify-center px-6 py-12 lg:px-16;
+  }
+
+  .auth-form-wrap {
+    @apply w-full max-w-md space-y-8;
+  }
+
+  .auth-form-header {
+    @apply space-y-1;
+  }
+
+  .auth-form-title {
+    @apply text-2xl font-bold text-gray-900;
+  }
+
+  .auth-form-subtitle {
+    @apply text-sm text-gray-500;
+  }
+
+  .auth-form-subtitle a {
+    @apply font-medium text-blue-600 hover:text-blue-700 underline underline-offset-2;
+  }
+
+  .auth-form {
+    @apply space-y-5;
+  }
+
+  .auth-form-field {
+    @apply space-y-1.5;
+  }
+
+  .auth-form-label {
+    @apply block text-sm font-medium text-gray-700;
+  }
+
+  .auth-form-input {
+    @apply w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20;
+  }
+
+  .auth-form-error {
+    @apply text-xs text-red-500 mt-0.5;
+  }
+
+  .auth-form-grid {
+    @apply grid grid-cols-1 gap-4 sm:grid-cols-2;
+  }
+
+  .auth-form-select-trigger {
+    height: auto !important;
+    min-height: 2.5rem;
+    width: 100% !important;
+    @apply rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 shadow-sm;
+  }
+
+  .auth-submit-btn {
+    @apply w-full bg-blue-600 text-white font-semibold py-2.5 rounded-lg shadow-sm hover:bg-blue-700 transition text-sm;
+  }
+
+  .auth-mobile-brand {
+    @apply flex lg:hidden items-center gap-2 justify-center mb-6;
+  }
+
+  .auth-mobile-brand-icon {
+    @apply size-8 rounded-lg bg-blue-600 flex items-center justify-center text-white text-lg;
+  }
+
+  .auth-mobile-brand-name {
+    @apply text-2xl font-bold text-gray-900 hover:opacity-80 transition-opacity;
+  }
+
+  
+}

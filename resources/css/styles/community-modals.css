@@ -1,0 +1,86 @@
+@layer components {
+
+
+  .community-modal-content {
+    @apply max-w-[calc(100%-1rem)] sm:max-w-3xl rounded-2xl p-0 overflow-hidden !flex !flex-col max-h-[90dvh] overflow-x-hidden;
+  }
+
+  .community-modal-header {
+    @apply border-b border-gray-200 bg-white px-4 py-5 sm:px-6;
+  }
+
+  .community-modal-title {
+    @apply text-xl sm:text-2xl font-bold text-gray-900;
+  }
+
+  .community-modal-form {
+    @apply space-y-4 bg-white px-4 py-4 sm:px-6 sm:py-5 overflow-y-auto overflow-x-hidden flex-1 min-h-0 overscroll-contain;
+  }
+
+  .community-modal-field {
+    @apply space-y-2;
+  }
+
+  .community-modal-label {
+    @apply text-sm font-semibold text-gray-700;
+  }
+
+  .community-modal-input {
+    @apply w-full;
+  }
+
+  .community-modal-textarea {
+    @apply min-h-28;
+  }
+
+  .community-modal-select-trigger {
+    height: auto !important;
+    min-height: 2.75rem;
+    white-space: normal !important;
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+    width: 100% !important;
+  }
+
+  .community-modal-select-trigger *[data-slot='select-value'] {
+    white-space: normal !important;
+    overflow: visible !important;
+    -webkit-line-clamp: unset !important;
+    line-clamp: unset !important;
+    display: block !important;
+    word-break: break-word;
+    line-height: 1.25rem;
+    padding-right: 0.5rem;
+  }
+
+  .community-modal-select-content {
+    @apply max-w-lg;
+  }
+
+  .community-modal-select-item {
+    @apply items-start whitespace-normal py-2;
+  }
+
+  .community-modal-select-item [data-slot='select-item-text'] {
+    @apply whitespace-normal break-words;
+  }
+
+  .community-modal-map {
+    @apply h-40 sm:h-52 w-full overflow-hidden rounded-xl border border-gray-200 shadow-sm;
+  }
+
+  .community-modal-helper-text {
+    @apply text-sm text-gray-500;
+  }
+
+  .community-modal-split-grid {
+    @apply grid grid-cols-1 gap-4 sm:grid-cols-2;
+  }
+
+  .community-modal-footer {
+    @apply flex flex-col-reverse gap-2 sm:flex-row sm:justify-end -mx-4 -mb-4 mt-2 bg-gray-50 px-4 py-4 sm:-mx-6 sm:-mb-5 sm:px-6 border-t border-gray-200 shrink-0;
+  }
+
+
+}
+

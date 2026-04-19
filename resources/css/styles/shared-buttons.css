@@ -1,0 +1,14 @@
+﻿@layer components {
+
+
+  .community-modal-primary-button {
+    @apply w-full sm:w-auto cursor-pointer !border-blue-600 !bg-blue-600 !text-white hover:!bg-blue-700 focus-visible:!bg-blue-700;
+  }
+
+  .community-modal-secondary-button {
+    @apply w-full sm:w-auto cursor-pointer;
+  }
+
+  
+}
+

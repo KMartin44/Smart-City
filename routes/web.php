@@ -5,8 +5,20 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Http\Controllers\UserController;
 
+use App\Models\Issue;
+use App\Models\Statement;
+use App\Models\Event;
+use App\Models\User;
+
 Route::get('/', function () {
-    return Inertia::render('mainPage');
+    return Inertia::render('mainPage', [
+        'stats' => [
+            'resolvedProblems' => Statement::count(),
+            'organizedEvents' => Event::count(),
+            'activeParticipants' => User::count(),
+        ],
+        'user' => Auth::check() ? Auth::user()->only(['first_name', 'last_name', 'email']) : null,
+    ]);
 })->name('home');
 
 Route::get('/map', function () {
@@ -39,11 +51,26 @@ Route::get('/statements/edit/{id}', function ($id) {
     ]);
 })->name('statements.edit');
 
+Route::get('/chat', function () {
+    if (!Auth::check()) {
+        return redirect('/login');
+    }
+    return Inertia::render('chatPage/index', [
+        'user' => Auth::user()->only(['id', 'first_name', 'last_name', 'type']),
+    ]);
+})->name('chat');
+
 Route::get('/admin', function () {
+    if (!Auth::check() || Auth::user()->type !== 'admin') {
+        abort(403);
+    }
     return Inertia::render('adminPage/index');
 })->name('admin.index');
 
 Route::get('/admin/show/{type}/{id}', function ($type, $id) {
+    if (!Auth::check() || Auth::user()->type !== 'admin') {
+        abort(403);
+    }
     return Inertia::render('adminPage/show', [
         'type' => $type,
         'id' => (int) $id,
@@ -51,6 +78,9 @@ Route::get('/admin/show/{type}/{id}', function ($type, $id) {
 })->name('admin.show');
 
 Route::get('/admin/edit/{type}/{id}', function ($type, $id) {
+    if (!Auth::check() || Auth::user()->type !== 'admin') {
+        abort(403);
+    }
     return Inertia::render('adminPage/edit', [
         'type' => $type,
         'id' => (int) $id,

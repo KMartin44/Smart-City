@@ -3,41 +3,40 @@ import {
     TriangleAlert,
     CalendarDays,
     PencilLine,
-    ChartNoAxesCombined,
     ShieldUser,
-    MapPinned, ChevronUp, User2
+    MapPinned,
+    MessageSquare,
 } from 'lucide-react';
 import {
     Sidebar,
-    SidebarContent, SidebarFooter,
+    SidebarContent,
+    SidebarFooter,
+    SidebarHeader,
     SidebarGroup,
     SidebarGroupContent,
     SidebarMenu,
     SidebarMenuButton,
-    SidebarMenuItem
+    SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
-import { Slot } from '@radix-ui/react-slot';
+import { usePage } from '@inertiajs/react';
+
+type SidebarPageProps = {
+    auth?: {
+        user?: {
+            type?: string;
+        } | null;
+    };
+};
 
 const items = [
     {
-        title: "Home",
-        url: "/",
-        icon: Home,
-    },
-    {
         title: "Problémabejelentés",
-        url: "#",
+        url: "/issues",
         icon: TriangleAlert,
     },
     {
         title: "Események",
-        url: "#",
+        url: "/events",
         icon: CalendarDays,
     },
     {
@@ -46,14 +45,14 @@ const items = [
         icon: PencilLine,
     },
     {
-        title: "Statisztikák",
-        url: "#",
-        icon: ChartNoAxesCombined
-    },
-    {
         title: "Térkép",
         url: "/map",
         icon: MapPinned,
+    },
+    {
+        title: "Chat",
+        url: "/chat",
+        icon: MessageSquare,
     },
     {
         title: "Admin",
@@ -63,16 +62,35 @@ const items = [
 ]
 
 export function AppSidebar() {
+    const { auth } = usePage<SidebarPageProps>().props;
+    const user = auth?.user;
+    const isAdmin = (user?.type ?? '').toLowerCase() === 'admin';
+    const visibleItems = items.filter((item) => item.url !== '/admin' || isAdmin);
+
     return (
-        <Sidebar variant={"sidebar"} collapsible={'icon'}>
+        <Sidebar variant={"sidebar"} collapsible={'icon'} className="app-sidebar">
+            <SidebarHeader className="app-sidebar-header">
+                <a href="/" className="app-sidebar-brand-link">
+                    <div className="app-sidebar-logo">
+                        <Home className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex flex-col">
+                        <span className="app-sidebar-title">Okos Város</span>
+                        <span className="app-sidebar-subtitle">Platform</span>
+                    </div>
+                </a>
+            </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupContent>
-                        <SidebarMenu>
-                            {items.map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton onClick={() => window.location.href = item.url}>
-                                        <item.icon />
+                        <SidebarMenu className="app-sidebar-menu">
+                            {visibleItems.map((item) => (
+                                <SidebarMenuItem key={item.title} className="app-sidebar-menu-item">
+                                    <SidebarMenuButton
+                                        onClick={() => window.location.href = item.url}
+                                        className="app-sidebar-menu-button"
+                                    >
+                                        <item.icon className="w-5 h-5" />
                                         <span>{item.title}</span>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
@@ -81,33 +99,7 @@ export function AppSidebar() {
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
-            <SidebarFooter>
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger>
-                                <Slot>
-                                    <SidebarMenuButton>
-                                        <User2 /> Account
-                                        <ChevronUp className="ml-auto" />
-                                    </SidebarMenuButton>
-                                </Slot>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent
-                                side="top"
-                                className="w-[--radix-popper-anchor-width]"
-                            >
-                                <DropdownMenuItem>
-                                    <span>Login</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    <span>Register</span>
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </SidebarMenuItem>
-                </SidebarMenu>
-            </SidebarFooter>
+            <SidebarFooter className="app-sidebar-footer" />
         </Sidebar>
     )
 }

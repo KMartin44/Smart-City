@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use Illuminate\Auth\Access\Response;
 use App\Models\Issue;
 use App\Models\User;
 
@@ -11,17 +10,17 @@ class IssuePolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(?User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Issue $issue): bool
+    public function view(?User $user, Issue $issue): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -29,15 +28,16 @@ class IssuePolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
      * Determine whether the user can update the model.
+     * Only admins and önkormányzati users can toggle is_done.
      */
     public function update(User $user, Issue $issue): bool
     {
-        return false;
+        return in_array($user->type, ['admin', 'onkormanyzati']);
     }
 
     /**
@@ -45,7 +45,7 @@ class IssuePolicy
      */
     public function delete(User $user, Issue $issue): bool
     {
-        return false;
+        return $user->type === 'admin' || $user->id === $issue->user_id;
     }
 
     /**
@@ -53,7 +53,7 @@ class IssuePolicy
      */
     public function restore(User $user, Issue $issue): bool
     {
-        return false;
+        return $user->type === 'admin';
     }
 
     /**
@@ -61,6 +61,7 @@ class IssuePolicy
      */
     public function forceDelete(User $user, Issue $issue): bool
     {
-        return false;
+        return $user->type === 'admin';
     }
 }
+

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Issue>
@@ -22,7 +23,7 @@ class IssueFactory extends Factory
             'latitude' => fake()->latitude(),
             'longitude' => fake()->longitude(),
             'description' => fake()->paragraph(),
-            'user_id' => \App\Models\User::factory(),
+            'user_id' => User::factory(),
         ];
     }
 }

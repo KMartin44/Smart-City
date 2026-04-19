@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { MainLayout } from '@/layouts/mainLayout';
 import { router } from '@inertiajs/react';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, ReactNode, useEffect, useState } from 'react';
 
 type EditProps = {
     id: number;
@@ -28,9 +28,7 @@ export default function Edit({ id, userType }: EditProps) {
 
     useEffect(() => {
         fetch(`/api/statements/${id}`, {
-            headers: {
-                Accept: 'application/json',
-            },
+            headers: { Accept: 'application/json' },
         })
             .then((res) => res.json())
             .then((response) => {
@@ -43,11 +41,7 @@ export default function Edit({ id, userType }: EditProps) {
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-
-        setData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
+        setData((prev) => ({ ...prev, [name]: value }));
     };
 
     const allowEdit = canManageStatement(userType);
@@ -69,59 +63,87 @@ export default function Edit({ id, userType }: EditProps) {
             body: JSON.stringify(data),
         });
 
-        alert('Mentve');
         router.get('/statements');
     };
 
     if (!allowEdit) {
         return (
-            <div className="container mx-auto p-4">
-                <p className="text-red-500">Nincs jogosultságod a közlemény szerkesztéséhez.</p>
+            <div className="statement-details-page">
+                <section className="statement-details-section">
+                    <div className="statement-details-section-inner">
+                        <p className="text-red-500 text-sm">Nincs jogosultságod a közlemény szerkesztéséhez.</p>
+                    </div>
+                </section>
             </div>
         );
     }
 
     return (
-        <div className="container mx-auto p-4">
-            <Card>
-                <CardHeader>
-                    <CardTitle>Közlemény szerkesztése</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <div>
-                            <Label htmlFor="title">Cím</Label>
-                            <Input
-                                id="title"
-                                name="title"
-                                value={data.title}
-                                onChange={handleChange}
-                                required
-                            />
+        <div className="statement-details-page">
+            <section className="statement-details-hero">
+                <div className="statement-details-hero-inner">
+                    <div className="statement-details-hero-content">
+                        <h1 className="statement-details-hero-title">Közlemény szerkesztése</h1>
+                        <p className="statement-details-hero-copy">
+                            Módosítsd a közlemény tartalmát az alábbi űrlapon.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section className="statement-details-section">
+                <div className="statement-details-section-inner">
+                    <div className="statement-edit-card">
+                        <div className="statement-edit-card-header">
+                            <h2 className="statement-edit-card-title">Szerkesztés</h2>
                         </div>
-                        <div>
-                            <Label htmlFor="description">Leírás</Label>
-                            <Textarea
-                                id="description"
-                                name="description"
-                                value={data.description}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div className="flex gap-2">
-                            <Button type="submit">Mentés</Button>
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={() => router.get('/statements')}
-                            >
-                                Vissza
-                            </Button>
-                        </div>
-                    </form>
-                </CardContent>
-            </Card>
+
+                        <form onSubmit={handleSubmit}>
+                            <div className="statement-edit-form">
+                                <div className="statement-edit-field">
+                                    <Label className="statement-edit-label" htmlFor="title">Cím</Label>
+                                    <Input
+                                        className="statement-edit-input"
+                                        id="title"
+                                        name="title"
+                                        value={data.title}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="statement-edit-field">
+                                    <Label className="statement-edit-label" htmlFor="description">Leírás</Label>
+                                    <Textarea
+                                        className="statement-edit-input statement-edit-textarea"
+                                        id="description"
+                                        name="description"
+                                        value={data.description}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="statement-edit-footer">
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    className="statement-edit-cancel-button"
+                                    onClick={() => router.get('/statements')}
+                                >
+                                    Vissza
+                                </Button>
+                                <Button type="submit" variant="outline" className="statement-edit-submit-button">
+                                    Mentés
+                                </Button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
         </div>
     );
 }
+
+Edit.layout = (page: ReactNode) => <MainLayout>{page}</MainLayout>;

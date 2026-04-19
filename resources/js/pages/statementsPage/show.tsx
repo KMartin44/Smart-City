@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
+import { MainLayout } from '@/layouts/mainLayout';
 
 type ShowProps = {
     id: number;
@@ -36,40 +37,76 @@ export default function Show({ id, userType }: ShowProps) {
     }, [id]);
 
     if (!statement) {
-        return <p>Betöltés...</p>;
+        return (
+            <MainLayout>
+                <div className="statement-details-loading-wrap">
+                    <p className="statement-details-loading">Betöltés...</p>
+                </div>
+            </MainLayout>
+        );
     }
 
     const canManage = canManageStatement(userType);
 
     return (
-        <div className="container mx-auto p-4">
-            <Card>
-                <CardHeader>
-                    <CardTitle>{statement.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <p><strong>Leírás:</strong> {statement.description}</p>
-                    <p><strong>Létrehozva:</strong> {statement.created_at}</p>
-                    <p><strong>Frissítve:</strong> {statement.updated_at}</p>
-                    <div className="mt-4">
-                        <Button
-                            variant="outline"
-                            onClick={() => router.get('/statements')}
-                            className="mr-2"
-                        >
-                            Vissza
-                        </Button>
-                        {canManage && (
-                            <Button
-                                variant="outline"
-                                onClick={() => router.get(`/statements/edit/${statement.id}`)}
-                            >
-                                Szerkesztés
-                            </Button>
-                        )}
+        <MainLayout>
+            <div className="statement-details-page">
+                <section className="statement-details-hero">
+                    <div className="statement-details-hero-inner">
+                        <div className="statement-details-hero-content">
+                            <h1 className="statement-details-hero-title">Közlemény részletei</h1>
+                            <p className="statement-details-hero-copy">
+                                Áttekintheted a kiválasztott közlemény minden fontos adatát.
+                            </p>
+                        </div>
                     </div>
-                </CardContent>
-            </Card>
-        </div>
+                </section>
+
+                <section className="statement-details-section">
+                    <div className="statement-details-section-inner">
+                        <Card className="statement-details-card">
+                            <CardHeader>
+                                <CardTitle className="statement-details-card-title">{statement.title}</CardTitle>
+                            </CardHeader>
+                            <CardContent className="statement-details-card-content">
+                                <div className="statement-details-grid">
+                                    <div className="statement-details-item">
+                                        <p className="statement-details-label">Leírás</p>
+                                        <p className="statement-details-value statement-details-description">{statement.description}</p>
+                                    </div>
+                                    <div className="statement-details-item">
+                                        <p className="statement-details-label">Létrehozva</p>
+                                        <p className="statement-details-value">{statement.created_at}</p>
+                                    </div>
+                                    <div className="statement-details-item">
+                                        <p className="statement-details-label">Frissítve</p>
+                                        <p className="statement-details-value">{statement.updated_at}</p>
+                                    </div>
+                                </div>
+
+                                <div className="statement-details-actions">
+                                    <Button
+                                        variant="outline"
+                                        onClick={() => router.get('/statements')}
+                                        className="statement-details-action-button"
+                                    >
+                                        Vissza
+                                    </Button>
+                                    {canManage && (
+                                        <Button
+                                            variant="outline"
+                                            onClick={() => router.get(`/statements/edit/${statement.id}`)}
+                                            className="statement-details-action-button"
+                                        >
+                                            Szerkesztés
+                                        </Button>
+                                    )}
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </div>
+                </section>
+            </div>
+        </MainLayout>
     );
 }

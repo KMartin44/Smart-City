@@ -10,7 +10,7 @@ type Items = {
 };
 
 export default function Index() {
-    const [type, setType] = useState<Types>(null);
+    const [type, setType] = useState<Types>('event');
     const [items, setItems] = useState<Items[]>([]);
 
     useEffect(() => {
@@ -37,11 +37,21 @@ export default function Index() {
 
     return (
         <MainLayout>
-            <h1>Admin oldal</h1>
+            <div className="admin-page">
+                <div className="admin-hero">
+                    <div className="admin-hero-inner">
+                        <div className="admin-hero-text">
+                            <h1 className="admin-hero-title">Admin panel</h1>
+                            <p className="admin-hero-subtitle">Kezeld az eseményeket, problémákat és közleményeket.</p>
+                        </div>
+                    </div>
+                </div>
 
-            <AdminButtons setType={setType} />
-
-            {type && <AdminTable items={items} type={type} />}
+                <div className="admin-section">
+                    <AdminButtons setType={setType} active={type} />
+                    {type && <AdminTable items={items} type={type} />}
+                </div>
+            </div>
         </MainLayout>
     );
 }

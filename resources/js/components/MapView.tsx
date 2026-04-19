@@ -1,11 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 
-type Event = {
+type MapEvent = {
   id: number;
   title: string;
   latitude: number;
@@ -33,18 +31,18 @@ const icons = {
     iconUrl: "/icons/circle-alert.svg",
     iconSize: [25, 41],
     iconAnchor: [12, 41],
-    popupAnchor: [0, -35]
+    popupAnchor: [0, -35],
   }),
   event: new L.Icon({
     iconUrl: "/icons/calendar.svg",
     iconSize: [25, 41],
     iconAnchor: [12, 41],
-    popupAnchor: [0, -35]
+    popupAnchor: [0, -35],
   }),
 };
 
 export default function MapView() {
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<MapEvent[]>([]);
   const [issues, setIssues] = useState<Issue[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -57,31 +55,16 @@ export default function MapView() {
     const fetchData = async () => {
       try {
         const [eventsRes, issuesRes] = await Promise.all([
-          fetch("/api/events", {
-            method: "GET",
-            headers: {
-              Accept: "application/json",
-            },
-          }),
-          fetch("/api/issues", {
-            method: "GET",
-            headers: {
-              Accept: "application/json",
-            },
-          }),
+          fetch("/api/events", { method: "GET", headers: { Accept: "application/json" } }),
+          fetch("/api/issues", { method: "GET", headers: { Accept: "application/json" } }),
         ]);
 
-        if (!eventsRes.ok || !issuesRes.ok) {
-          throw new Error("Hiba az API válaszban");
-        }
+        if (!eventsRes.ok || !issuesRes.ok) throw new Error("Hiba az API válaszban");
 
-        const eventsData = await eventsRes.json();
-        const issuesData = await issuesRes.json();
-
-        setEvents(eventsData);
-        setIssues(issuesData);
+        setEvents(await eventsRes.json());
+        setIssues(await issuesRes.json());
       } catch (error) {
-        console.error("Hiba adatlekéréskor:", error);
+        console.error("Hiba adatlekérésekor:", error);
       } finally {
         setLoading(false);
       }
@@ -90,8 +73,8 @@ export default function MapView() {
     fetchData();
   }, []);
 
-  const items: MapItem[] = useMemo(() => {
-    return [
+  const items: MapItem[] = useMemo(
+    () => [
       ...events.map((e) => ({
         id: e.id,
         title: e.title,
@@ -100,85 +83,81 @@ export default function MapView() {
         lng: e.longitude,
       })),
       ...issues
-      .filter((i) => !i.is_done)
-      .map((i) => ({
-        id: i.id,
-        title: i.title,
-        category: "issue" as const,
-        lat: i.latitude,
-        lng: i.longitude,
-      })),
-    ];
-  }, [events, issues]);
-
-  const filteredItems = items.filter(
-    (item) => filters[item.category]
+        .filter((i) => !i.is_done)
+        .map((i) => ({
+          id: i.id,
+          title: i.title,
+          category: "issue" as const,
+          lat: i.latitude,
+          lng: i.longitude,
+        })),
+    ],
+    [events, issues],
   );
 
+  const filteredItems = items.filter((item) => filters[item.category]);
+
   if (loading) {
-    return <div>Betöltés...</div>;
+    return <div className="map-loading">Betöltés...</div>;
   }
 
   return (
-    <div>
-      <Card>
-        <CardHeader>
-          <CardTitle>Szűrés</CardTitle>
-        </CardHeader>
-        <CardContent>
+    <div className="map-page">
+      <div className="map-hero">
+        <div className="map-hero-inner">
+          <h1 className="map-hero-title">Térkép</h1>
+          <p className="map-hero-subtitle">
+            Böngéssz az aktív problémák és közelgő események között a térképen.
+          </p>
+        </div>
+      </div>
 
-          <div>
-            <Checkbox
-              id="issue"
-              checked={filters.issue}
-              onCheckedChange={(checked: boolean) =>
-                setFilters({ ...filters, issue: !!checked })
-              }
-            />
-            <Label htmlFor="issue">
-              Probléma bejelentések
-            </Label>
+      <div className="map-section">
+        <div className="map-filter-card">
+          <p className="map-filter-title">Szűrés</p>
+          <div className="map-filter-list">
+            <label className="map-filter-item">
+              <Checkbox
+                id="issue"
+                checked={filters.issue}
+                onCheckedChange={(checked: boolean) =>
+                  setFilters({ ...filters, issue: !!checked })
+                }
+              />
+              <span className="map-filter-badge-issue">Probléma bejelentések</span>
+            </label>
+
+            <label className="map-filter-item">
+              <Checkbox
+                id="event"
+                checked={filters.event}
+                onCheckedChange={(checked: boolean) =>
+                  setFilters({ ...filters, event: !!checked })
+                }
+              />
+              <span className="map-filter-badge-event">Események</span>
+            </label>
           </div>
+        </div>
 
-          <div>
-            <Checkbox
-              id="event"
-              checked={filters.event}
-              onCheckedChange={(checked: boolean) =>
-                setFilters({ ...filters, event: !!checked })
-              }
-            />
-            <Label htmlFor="event">
-              Események
-            </Label>
-          </div>
-
-        </CardContent>
-      </Card>
-
-      <div className="h-[500px] w-full rounded-2xl overflow-hidden border mt-4">
-        <MapContainer
-          center={[47.4979, 19.0402]}
-          zoom={13}
-          className="h-full w-full"
-        >
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-
-          {filteredItems.map((item) => (
-            <Marker
-              key={`${item.category}-${item.id}`}
-              position={[item.lat, item.lng]}
-              icon={icons[item.category]}
-            >
-              <Popup>
-                <strong>{item.title}</strong>
-                <br />
-                {item.category === "event" ? "Esemény" : "Probléma"}
-              </Popup>
-            </Marker>
-          ))}
-
-        </MapContainer>
+        <div className="map-container">
+          <MapContainer center={[47.4979, 19.0402]} zoom={13} className="h-full w-full">
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            {filteredItems.map((item) => (
+              <Marker
+                key={`${item.category}-${item.id}`}
+                position={[item.lat, item.lng]}
+                icon={icons[item.category]}
+              >
+                <Popup>
+                  <strong>{item.title}</strong>
+                  <br />
+                  {item.category === "event" ? "Esemény" : "Probléma"}
+                </Popup>
+              </Marker>
+            ))}
+          </MapContainer>
+        </div>
       </div>
     </div>
   );
