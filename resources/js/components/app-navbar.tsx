@@ -82,7 +82,7 @@ export function AppNavbar() {
                                 <Home className="w-4 h-4 text-white" />
                             </div>
                             <div className="app-navbar-brand-text">
-                                <span className="app-navbar-brand-title">Smart City</span>
+                                <span className="app-navbar-brand-title">SmartCity</span>
                                 <span className="app-navbar-brand-subtitle">Platform</span>
                             </div>
                         </a>
