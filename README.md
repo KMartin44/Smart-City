@@ -1,18 +1,18 @@
 # SmartCity
 
-Egy közösségi platform városlakók és önkormányzat számára, iskolai projektként készítve. A polgárok problémákat jelenthetnek be, böngészhetnek városi eseményeket, olvashatják a hivatalos közleményeket, és valós idejű közösségi csevegésben vehetnek részt — egy helyen.
+Egy közösségi platform városlakók és önkormányzat számára. A polgárok problémákat jelenthetnek be, böngészhetnek városi eseményeket, olvashatják a hivatalos közleményeket, és valós idejű közösségi csevegésben vehetnek részt egy helyen.
 
 ---
 
 ## Funkciók
 
-- **Problémák** — A polgárok helyi problémákat jelenthetnek be (infrastruktúra, környezet, zaj stb.). Az önkormányzati felhasználók megjelölhetik őket megoldottként. A helyszín fordított geokódolással automatikusan utcanévre alakul.
-- **Események** — Közösségi események böngészése és létrehozása, térképes helyszínválasztással és automatikus cím-megjelenítéssel.
-- **Közlemények** — Hivatalos bejelentések, amelyeket az önkormányzat vagy admin publikál és kezel.
-- **Chat** — Valós idejű közösségi csevegő, ahol a bejelentkezett felhasználók üzenhetnek egymásnak. A saját üzenetek törölhetők; admin bármely üzenetet törölhet.
-- **Térkép** — Interaktív térképnézet a városról.
-- **Admin panel** — Minden tartalom kezelése (események, problémák, közlemények) részletes és szerkesztő nézetekkel. Felhasználók kezelése: szerepkör-módosítás és törlés.
-- **Szerepköralapú hozzáférés** — Három felhasználói szerepkör különböző jogosultságokkal: `lakos`, `onkormanyzat`, `admin`.
+- **Problémák** - A polgárok helyi problémákat jelenthetnek be (infrastruktúra, környezet, zaj stb.). Az önkormányzati felhasználók megjelölhetik őket megoldottként. A helyszín fordított geokódolással automatikusan utcanévre alakul.
+- **Események** - Közösségi események böngészése és létrehozása, térképes helyszínválasztással és automatikus cím-megjelenítéssel.
+- **Közlemények** - Hivatalos bejelentések, amelyeket az önkormányzat vagy admin publikál és kezel.
+- **Chat** - Valós idejű közösségi csevegő, ahol a bejelentkezett felhasználók üzenhetnek egymásnak. A saját üzenetek törölhetők; admin bármely üzenetet törölhet.
+- **Térkép** - Interaktív térképnézet a városról.
+- **Admin panel** - Minden tartalom kezelése (események, problémák, közlemények) részletes és szerkesztő nézetekkel. Felhasználók kezelése: szerepkör-módosítás és törlés.
+- **Szerepköralapú hozzáférés** - Három felhasználói szerepkör különböző jogosultságokkal: `lakos`, `onkormanyzat`, `admin`.
 
 ---
 
